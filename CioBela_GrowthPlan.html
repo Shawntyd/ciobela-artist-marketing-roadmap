@@ -1,0 +1,2423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cio Bela — The Growth Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Cinzel:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A85C;
+    --gold-light: #E8CF8A;
+    --gold-dark: #8B6F35;
+    --bg: #1C1C1E;
+    --bg2: #232325;
+    --surface: #2A2A2C;
+    --surface2: #323234;
+    --border: rgba(201,168,92,0.18);
+    --border-bright: rgba(201,168,92,0.45);
+    --text: #F0E8D8;
+    --text-muted: #8A8070;
+    --text-mid: #B8A880;
+    --phase1: #C9A85C;
+    --phase2: #8FB896;
+    --phase3: #8BAED4;
+    --phase4: #B89AD4;
+  }
+
+  html, body {
+    background-color: #1C1C1E !important;
+    background: #1C1C1E !important;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #1C1C1E !important;
+    background: #1C1C1E !important;
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 40% at 15% 10%, rgba(201,168,92,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 30% at 85% 90%, rgba(139,174,212,0.03) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 56px 24px 36px;
+    border-bottom: 1px solid var(--border);
+    background: #1C1C1E;
+  }
+
+  .header-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 7vw, 60px);
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.05;
+    margin-bottom: 10px;
+  }
+
+  h1 em { color: var(--gold); font-style: italic; }
+
+  .header-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .header-divider {
+    width: 50px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 18px auto 0;
+  }
+
+  /* ── PHASE TABS ── */
+  .phase-nav {
+    position: sticky; top: 0; z-index: 50;
+    background: #1C1C1E;
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    justify-content: center;
+  }
+  .phase-nav::-webkit-scrollbar { display: none; }
+
+  .phase-tab {
+    flex-shrink: 0;
+    padding: 18px 22px;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.25s;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: none;
+    border-left: none; border-right: none; border-top: none;
+  }
+
+  .phase-tab:hover { color: var(--text); }
+  .phase-tab[data-phase="1"].active { color: var(--phase1); border-bottom-color: var(--phase1); }
+  .phase-tab[data-phase="2"].active { color: var(--phase2); border-bottom-color: var(--phase2); }
+  .phase-tab[data-phase="3"].active { color: var(--phase3); border-bottom-color: var(--phase3); }
+  .phase-tab[data-phase="4"].active { color: var(--phase4); border-bottom-color: var(--phase4); }
+
+  /* ── MAIN ── */
+  main {
+    position: relative; z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 20px 100px;
+  }
+
+  .phase-content { display: none; }
+  .phase-content.active { display: block; }
+
+  /* Phase hero */
+  .phase-hero { margin-bottom: 32px; }
+
+  .phase-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    padding: 5px 14px;
+    border-radius: 100px;
+    border: 1px solid currentColor;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .phase-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .phase-title em { font-style: italic; }
+
+  .phase-timeframe {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .phase-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 560px;
+    border-left: 2px solid var(--border-bright);
+    padding-left: 14px;
+  }
+
+  /* Callout */
+  .callout {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    line-height: 1.6;
+    border: 1px solid;
+  }
+  .callout.gold  { background: rgba(201,168,92,0.07); border-color: rgba(201,168,92,0.22); color: var(--text-mid); }
+  .callout.green { background: rgba(143,184,150,0.07); border-color: rgba(143,184,150,0.22); color: #8FB896; }
+  .callout.blue  { background: rgba(139,174,212,0.07); border-color: rgba(139,174,212,0.22); color: #8BAED4; }
+  .callout.purple{ background: rgba(184,154,212,0.07); border-color: rgba(184,154,212,0.22); color: #B89AD4; }
+  .callout strong { display: block; margin-bottom: 4px; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; font-family: 'Cinzel', serif; }
+
+  /* Progress bar */
+  .phase-progress {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .progress-track {
+    flex: 1;
+    background: var(--bg2);
+    border-radius: 100px;
+    height: 5px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+    transition: width 0.5s ease;
+  }
+  .progress-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.2em; color: var(--text-muted); white-space: nowrap; }
+  .progress-count { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: var(--gold); white-space: nowrap; }
+
+  /* Section group */
+  .section-group { margin-bottom: 32px; }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* ── ACCORDION ITEM ── */
+  .acc-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .acc-item:hover { border-color: var(--border-bright); }
+  .acc-item.done { border-color: rgba(201,168,92,0.3); background: rgba(201,168,92,0.04); }
+  .acc-item.open { border-color: var(--border-bright); }
+
+  /* Accordion header */
+  .acc-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+  }
+
+  .acc-check {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-bright);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    color: transparent;
+    transition: all 0.2s;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .acc-item.done .acc-check {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #1C1C1E;
+  }
+
+  .acc-title-wrap { flex: 1; min-width: 0; }
+
+  .acc-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+    padding-right: 8px;
+  }
+  .acc-item.done .acc-title { color: var(--text-muted); text-decoration: line-through; text-decoration-color: rgba(201,168,92,0.35); }
+
+  .acc-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 3px;
+    flex-wrap: wrap;
+  }
+
+  .acc-tag {
+    font-size: 9px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .urgent-tag {
+    font-size: 9px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: rgba(201,168,92,0.12);
+    color: var(--gold);
+    border: 1px solid rgba(201,168,92,0.3);
+    white-space: nowrap;
+  }
+
+  .acc-arrow {
+    flex-shrink: 0;
+    font-size: 11px;
+    color: var(--text-muted);
+    transition: transform 0.25s;
+    margin-left: 4px;
+  }
+  .acc-item.open .acc-arrow { transform: rotate(180deg); }
+
+  /* Accordion body */
+  .acc-body {
+    overflow: hidden;
+    height: 0;
+    transition: height 0.35s ease;
+  }
+
+  .acc-body-inner {
+    padding: 0 18px 18px 52px;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+    margin-top: 0;
+  }
+
+  .acc-detail-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    margin-top: 12px;
+  }
+  .acc-detail-label:first-child { margin-top: 0; }
+
+  .acc-detail-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 4px;
+  }
+
+  .acc-step {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 7px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .acc-step::before { content: '→'; color: var(--gold); flex-shrink: 0; }
+
+  .acc-placeholder {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+    opacity: 0.6;
+  }
+
+  /* Inner accordion */
+  .inner-acc { margin-top: 10px; margin-bottom: 4px; }
+
+  .inner-acc-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 6px;
+    background: var(--bg2);
+  }
+
+  .inner-acc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    cursor: pointer;
+    user-select: none;
+    gap: 10px;
+  }
+
+  .inner-acc-title {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .inner-acc-arrow {
+    font-size: 10px;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .inner-acc-item.open .inner-acc-arrow { transform: rotate(180deg); }
+
+  .inner-acc-body {
+    overflow: hidden;
+    height: 0;
+    transition: height 0.25s ease;
+  }
+
+
+  .inner-acc-body-inner {
+    padding: 0 14px 14px;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+
+  /* Script box */
+  .script-box {
+    background: rgba(201,168,92,0.05);
+    border: 1px solid rgba(201,168,92,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    font-size: 12px;
+    color: var(--text-mid);
+    line-height: 1.8;
+    font-style: italic;
+    position: relative;
+  }
+
+  .script-box-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-style: normal;
+  }
+
+  .script-placeholder {
+    color: var(--gold);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* Offer grid */
+  .offer-group { margin-bottom: 16px; }
+
+  .offer-group-title {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .offer-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .offer-item::before { content: '✦'; color: var(--gold); flex-shrink: 0; font-size: 9px; margin-top: 3px; }
+
+  .offer-warning {
+    background: rgba(201,168,92,0.08);
+    border: 1px solid rgba(201,168,92,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 11px;
+    color: var(--text-mid);
+    line-height: 1.6;
+    margin-top: 8px;
+  }
+
+  .offer-warning strong { color: var(--gold); font-size: 10px; display: block; margin-bottom: 3px; font-family: 'Cinzel', serif; letter-spacing: 0.1em; }
+
+  /* Mobile */
+  @media (max-width: 560px) {
+    .phase-tab { padding: 14px 14px; font-size: 8px; letter-spacing: 0.15em; }
+    main { padding: 28px 14px 90px; }
+    .acc-body-inner { padding-left: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">Cio Bela Salons</div>
+  <h1>The <em>Growth</em> Plan</h1>
+  <p class="header-sub">New Artist Client-Building Roadmap</p>
+  <div class="header-divider"></div>
+</header>
+
+<nav class="phase-nav">
+  <button class="phase-tab active" data-phase="1" onclick="showPhase(1)">✦ Phase 1 — Now</button>
+  <button class="phase-tab" data-phase="2" onclick="showPhase(2)">Phase 2 — Momentum</button>
+  <button class="phase-tab" data-phase="3" onclick="showPhase(3)">Phase 3 — Community</button>
+  <button class="phase-tab" data-phase="4" onclick="showPhase(4)">Phase 4 — Systems</button>
+</nav>
+
+<main>
+
+<!-- ════════════════════════════════ PHASE 1 ════════════════════════════════ -->
+<div class="phase-content active" id="phase-1">
+  <div class="phase-hero">
+    <div class="phase-badge" style="color:var(--phase1)">✦ Phase 1</div>
+    <div class="phase-timeframe">Days 1 – 30</div>
+    <h2 class="phase-title">Fill the <em>Chairs.</em><br>Start Today.</h2>
+    <p class="phase-desc">Everything in this phase costs little to nothing and can start right now. Get bodies in seats, deliver an unforgettable experience, and rebook them before they leave.</p>
+  </div>
+
+  <div class="callout gold">
+    <strong>⚡ Your Mindset This Phase</strong>
+    Every client who sits in your chair deserves your absolute best — from day one. Your first clients are not practice. They are the foundation of your entire reputation. Show up prepared, be fully present, deliver top-tier work, and make every single person feel like the most important client you have ever had. Excellence is not something you grow into — it is something you decide to be from the very first appointment.
+  </div>
+
+  <div class="phase-progress">
+    <div class="progress-label">PROGRESS</div>
+    <div class="progress-track"><div class="progress-fill" id="p1-fill" style="width:0%"></div></div>
+    <div class="progress-count"><span id="p1-done">0</span>/<span id="p1-total">0</span></div>
+  </div>
+
+  <!-- Personal Outreach -->
+  <div class="section-group">
+    <div class="section-label">💬 Personal Outreach</div>
+
+    <div class="acc-item" id="a-net1">
+      <div class="acc-header" onclick="toggleAcc('a-net1')">
+        <div class="acc-check" onclick="toggleDone(event,'a-net1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">1. Personal text blast to every contact in your phone</div>
+          <div class="acc-meta"><span class="urgent-tag">Do This First</span><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+
+          <div class="acc-detail-label">Why This Works</div>
+          <div class="acc-detail-text">When you are starting from zero, every single person in your phone is a potential client or a connection to one. A personal text from someone they actually know will always outperform any ad, any post, or any platform listing. People book who they trust — and your network already trusts you. This is your fastest path to your first appointments and it costs absolutely nothing.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Step 1 — Choose Your Offer First</div>
+          <div class="acc-detail-text" style="margin-bottom:12px">Before you send a single text, decide what you are offering. Do not skip this step. Sending a vague message with no clear offer gives people nothing to say yes to. Pick ONE offer below that you feel genuinely good about. Choose something you can sustain for at least 30 days. Do not discount so deeply that you resent the client when they show up — your time and skill have real value.</div>
+
+          <!-- Offer inner accordion -->
+          <div class="inner-acc">
+
+            <div class="inner-acc-item" id="inner-offer1">
+              <div class="inner-acc-header" onclick="toggleInner('inner-offer1')">
+                <span class="inner-acc-title">✦ Intro & First-Timer Offers</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="offer-item">A flat percentage off their first service — 10%, 15%, or 20% is your choice</div>
+                <div class="offer-item">A flat dollar amount off — ex: $10 off any service over $50</div>
+                <div class="offer-item">A free add-on with their first booking — ex: free nail art on a full set, free brow wax with any wax service</div>
+                <div class="offer-item">A "first visit" price — a set discounted rate just for new clients that returns to full price after their first appointment</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-offer2">
+              <div class="inner-acc-header" onclick="toggleInner('inner-offer2')">
+                <span class="inner-acc-title">✦ Bring a Friend Offers</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="offer-item">Book together and you both save — ex: 15% off for both when booked the same day</div>
+                <div class="offer-item">Refer a friend and your next visit is discounted</div>
+                <div class="offer-item">Girls trip special — group discount for 3 or more booked together</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-offer3">
+              <div class="inner-acc-header" onclick="toggleInner('inner-offer3')">
+                <span class="inner-acc-title">✦ Bundle & Multi-Service Offers</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="offer-item">Book two services in one visit and save a percentage on the second</div>
+                <div class="offer-item">Cross-service collaboration — nail + wax, lash + wax, and more</div>
+                <div class="offer-warning"><strong>⚠️ Important</strong>If you want to run a cross-service promotion, reach out to Shawntavia directly so she can partner you with another artist who is also offering this. Do not promise this to a client without confirming the partnership first.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-offer4">
+              <div class="inner-acc-header" onclick="toggleInner('inner-offer4')">
+                <span class="inner-acc-title">✦ Value-Add Offers — No Discount Required</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">These offers add value without cutting your price. Great if you are not comfortable discounting yet.</div>
+                <div class="offer-item">Free consultation included with first booking</div>
+                <div class="offer-item">Free nail art design upgrade with any full set</div>
+                <div class="offer-item">Extended appointment time for first-time clients so there is never a rush</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-offer5">
+              <div class="inner-acc-header" onclick="toggleInner('inner-offer5')">
+                <span class="inner-acc-title">✦ Urgency Offers</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">Pair any offer above with one of these urgency lines to give people a reason to act now instead of later.</div>
+                <div class="offer-item">First 10 clients only — once those spots are gone it goes back to full price</div>
+                <div class="offer-item">This week only pricing</div>
+                <div class="offer-item">Book before [date] and lock in the intro price</div>
+              </div></div>
+            </div>
+
+          </div><!-- /offer inner accordions -->
+
+          <div class="acc-detail-label" style="margin-top:16px">Step 2 — Write Your Offer Down Before You Text Anyone</div>
+          <div class="acc-detail-text">Fill in these two things and keep them somewhere easy to copy from as you text:</div>
+          <div class="script-box" style="font-style:normal; margin-top:8px">
+            <div style="margin-bottom:8px">My offer: <span style="color:var(--gold)">_______________________________</span></div>
+            <div>My urgency line: <span style="color:var(--gold)">_______________________________</span></div>
+          </div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Step 3 — Send Your Texts Using These Scripts</div>
+          <div class="acc-detail-text" style="margin-bottom:12px">Choose the script that fits who you are texting. Personalize every single message — use their actual name and do not send the exact same copy-paste to everyone. People can tell the difference.</div>
+
+          <!-- Script inner accordions -->
+          <div class="inner-acc">
+
+            <div class="inner-acc-item" id="inner-script1">
+              <div class="inner-acc-header" onclick="toggleInner('inner-script1')">
+                <span class="inner-acc-title">📱 Script 1 — Warm & Personal</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">Best for close friends and family — the people who genuinely want to support you.</div>
+                <div class="script-box">
+                  Hey <span class="script-placeholder">[Name]</span>! I hope you are doing amazing. I wanted to reach out personally because I just started my <span class="script-placeholder">[your service — ex: nail career / waxing career]</span> at Cio Bela Salons and I would absolutely love to have you as one of my very first clients. As a thank you for your support I am offering <span class="script-placeholder">[your offer — ex: 20% off your first service]</span> for new clients. I am only doing this for <span class="script-placeholder">[your urgency — ex: my first 10 clients / through the end of the month]</span> so I did not want you to miss out. If you are interested just reply here or book directly at <span class="script-placeholder">[your booking link]</span>. I would love to see you! — <span class="script-placeholder">[Your Name]</span>
+                </div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-script2">
+              <div class="inner-acc-header" onclick="toggleInner('inner-script2')">
+                <span class="inner-acc-title">📱 Script 2 — Professional but Friendly</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">Best for acquaintances, old coworkers, classmates — people you know but are not close to.</div>
+                <div class="script-box">
+                  Hi <span class="script-placeholder">[Name]</span>! This is <span class="script-placeholder">[Your Name]</span> — I am not sure if you knew but I recently launched my <span class="script-placeholder">[your service — ex: nail career / waxing career]</span> and I am now taking clients at Cio Bela Salons in Oak Ridge North. I am currently offering <span class="script-placeholder">[your offer]</span> to all first-time clients and I would love for you to be one of them. This offer is only available <span class="script-placeholder">[your urgency]</span>. If you have been thinking about treating yourself, now is a great time. Feel free to reply here or book at <span class="script-placeholder">[your booking link]</span>. Hope to see you soon!
+                </div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-script3">
+              <div class="inner-acc-header" onclick="toggleInner('inner-script3')">
+                <span class="inner-acc-title">📱 Script 3 — Short & Punchy</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">Best for people you have not talked to in a while — low pressure, easy to respond to, no awkwardness.</div>
+                <div class="script-box">
+                  Hey <span class="script-placeholder">[Name]</span>! Long time no talk — hope you are well! I just started doing <span class="script-placeholder">[your service — ex: nails / waxing]</span> professionally at Cio Bela Salons and I am building my clientele. I am offering <span class="script-placeholder">[your offer]</span> to my first clients and would love to have you come in. No pressure at all — just did not want you to miss the deal! Book here if you are interested: <span class="script-placeholder">[your booking link]</span> 😊
+                </div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-script4">
+              <div class="inner-acc-header" onclick="toggleInner('inner-script4')">
+                <span class="inner-acc-title">📱 Script 4 — One Follow-Up</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">If someone did not respond to your first message, follow up one time only — then let it go. Do not chase.</div>
+                <div class="script-box">
+                  Hey <span class="script-placeholder">[Name]</span>! Just wanted to make sure you saw my last message. My <span class="script-placeholder">[your offer]</span> is only available through <span class="script-placeholder">[your urgency date]</span> — would hate for you to miss it! No worries at all if the timing is not right 😊
+                </div>
+              </div></div>
+            </div>
+
+          </div><!-- /script inner accordions -->
+
+          <div class="acc-detail-label" style="margin-top:16px">Action Steps</div>
+          <div class="acc-step">Choose your offer and write it down before you start — do not wing it mid-text.</div>
+          <div class="acc-step">Start with the people closest to you first — friends, family, your most supportive contacts — then work outward to acquaintances, old classmates, former coworkers, and neighbors.</div>
+          <div class="acc-step">Personalize every single message — use their actual name. People can feel a copy-paste and it kills the warmth instantly.</div>
+          <div class="acc-step">Track who you have texted and who responded in your notes app or a simple spreadsheet so no one falls through the cracks.</div>
+          <div class="acc-step">Follow up one time only if you do not hear back — then move on. Your energy is better spent on the next person.</div>
+          <div class="acc-step">Every person who says yes gets your absolute best work. They are not just a first client — they are a potential chain of ten more.</div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" id="a-net2">
+      <div class="acc-header" onclick="toggleAcc('a-net2')">
+        <div class="acc-check" onclick="toggleDone(event,'a-net2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">2. Put Your Offer Everywhere It Needs To Be</div>
+          <div class="acc-meta"><span class="urgent-tag">This Week</span><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+
+          <div class="acc-detail-label">Why This Matters</div>
+          <div class="acc-detail-text">Having a great offer means nothing if no one sees it. Once you have decided on your promotion your job is to plant it everywhere your potential clients might find you. An offer that only exists in one text message will not fill your book. An offer that is visible everywhere will.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Before You Do Anything — The Promo Claim Page</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">All of your promotion traffic needs to flow through one place — the <strong style="color:var(--gold)">Cio Bela Promotions Page</strong>. This page is currently being built and you will be notified the moment it is live. Every place listed below should direct people to that page — not to the booking page directly. The booking page comes after they submit their claim.</div>
+
+          <div class="acc-detail-text" style="margin-bottom:6px">Here is how the system works:</div>
+          <div class="acc-step">Client sees your offer somewhere online</div>
+          <div class="acc-step">They click your link and land on the Cio Bela Promotions Page</div>
+          <div class="acc-step">They fill out a short form — their name, phone number, which artist they want, and which promotion they are claiming</div>
+          <div class="acc-step">They receive a confirmation and are then directed to the booking page to schedule their appointment</div>
+          <div class="acc-step">Their submission is automatically logged in our system</div>
+          <div class="acc-step">You will be able to see every client who has claimed your promotion in your own personal tab on the promo viewer</div>
+
+          <div class="offer-warning" style="margin-top:10px; margin-bottom:10px; border-color: rgba(201,168,92,0.6); background: rgba(201,168,92,0.12);">
+            <strong>⚠️ Why This Cannot Be Automatic</strong>
+            This cannot be an automatic process because deposits are collected through the salon's booking system while the remaining balance is paid directly to you by the client. There is no way for the system to apply a discount on your behalf. The promo claim page and viewer exist specifically so that you are always notified when a client has a promotion and can apply it yourself at checkout. This is your responsibility to manage — the system makes it easy, but you have to check it.
+          </div>
+
+          <div class="offer-warning" style="margin-top:0; margin-bottom:16px">
+            <strong>⚡ Your Responsibility Before Every Appointment</strong>
+            Check the promo viewer and search your client's name before they arrive. If their name is in the system — honor the discount. If their name is not in the system — the discount does not apply.
+          </div>
+
+          <!-- Platform inner accordions -->
+          <div class="inner-acc">
+
+            <div class="inner-acc-item" id="inner-plat1">
+              <div class="inner-acc-header" onclick="toggleInner('inner-plat1')">
+                <span class="inner-acc-title">📱 1. Your Instagram Bio</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:10px">Your bio is the first thing anyone sees when they land on your profile. While your promotion is active your bio should clearly state your offer and end with a call to action directing people to the promotions page on the website.</div>
+                <div class="script-box">
+                  💅 <span class="script-placeholder">[Your Service]</span> at Cio Bela Salons — The Woodlands, Texas<br>
+                  ✨ New clients: <span class="script-placeholder">[Your Offer]</span><br>
+                  📲 Claim your promo below ↓
+                </div>
+                <div class="acc-detail-label">Action Steps</div>
+                <div class="acc-step">Update your Instagram bio today</div>
+                <div class="acc-step">Make sure your offer is the first or second line — not buried at the bottom</div>
+                <div class="acc-step">When your promotion ends update your bio and your link immediately</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-plat2">
+              <div class="inner-acc-header" onclick="toggleInner('inner-plat2')">
+                <span class="inner-acc-title">📘 2. Your Facebook Bio</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">Same principle as Instagram. Your Facebook profile bio and about section should both reflect your current offer while it is active.</div>
+                <div class="acc-detail-label">Action Steps</div>
+                <div class="acc-step">Update your Facebook bio and about section</div>
+                <div class="acc-step">Pin a post about your offer to the top of your profile so it is the first thing visitors see</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-plat3">
+              <div class="inner-acc-header" onclick="toggleInner('inner-plat3')">
+                <span class="inner-acc-title">🖼️ 3. A Dedicated Feed Post on All Platforms</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">Post your offer as a permanent feed post — not just a story. Stories disappear after 24 hours. A feed post lives on your profile and can be found by anyone who visits your page for the first time.</div>
+                <div class="acc-detail-label">Action Steps</div>
+                <div class="acc-step">Create one strong visual post featuring your offer — a photo of your work with your offer clearly written in the caption. If you need help designing the post feel free to reach out to Shawntavia.</div>
+                <div class="acc-step">Post it on Instagram, Facebook, and TikTok</div>
+                <div class="acc-step">Write a caption that tells people exactly what they get and how to claim it</div>
+                <div class="acc-step">End every caption with the promo page link</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-plat4">
+              <div class="inner-acc-header" onclick="toggleInner('inner-plat4')">
+                <span class="inner-acc-title">🔗 4. Your Link In Bio — Promo Page Only</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">While your promotion is active your link in bio goes to the Cio Bela Promotions Page — not the booking page. The promo page is step one. Booking is step two. Sending people directly to the booking page skips the promo claim entirely and you lose the record.</div>
+                <div class="acc-detail-label">Action Steps</div>
+                <div class="acc-step">Update your link in bio on Instagram and TikTok to the promo page link — Shawntavia will provide this once the page is live</div>
+                <div class="acc-step">Click it yourself to confirm it is working before you start promoting</div>
+                <div class="acc-step">When your promotion ends switch your link in bio back to the direct booking page immediately</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-plat5">
+              <div class="inner-acc-header" onclick="toggleInner('inner-plat5')">
+                <span class="inner-acc-title">⭐ 5. A Pinned Post or Story Highlight</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">Pin your offer post to the top of your Instagram profile and create a Story Highlight so it never gets buried as you continue posting.</div>
+                <div class="acc-detail-label">Action Steps</div>
+                <div class="acc-step">Pin your offer post on Instagram</div>
+                <div class="acc-step">Create a Story Highlight — name it something like "Deals" or "Book Me"</div>
+                <div class="acc-step">Remove it the moment your promotion ends</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-plat6">
+              <div class="inner-acc-header" onclick="toggleInner('inner-plat6')">
+                <span class="inner-acc-title">🔍 6. The Salon's Google Business Profile</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">The salon has one Google Business Profile that all artists share. Promotions posted here as Offer posts stay visible until the expiration date you set — no weekly updates needed.</div>
+                <div class="acc-detail-label">Action Steps</div>
+                <div class="acc-step">Write out your offer details and expiration date if you have one and send them to Shawntavia</div>
+                <div class="acc-step">Shawntavia will post it as an Offer post on the Cio Bela Google Business Profile</div>
+                <div class="acc-step">It stays visible automatically until the date you set</div>
+                <div class="acc-step">When your promotion ends notify Shawntavia so she can remove or update it</div>
+              </div></div>
+            </div>
+
+          </div><!-- /platform inner accordions -->
+
+          <div class="acc-detail-label" style="margin-top:16px">One Final Reminder — Expired Promotions</div>
+          <div class="acc-detail-text" style="margin-bottom:8px">Always remove your promotion the moment you decide it is over. Set a phone reminder or make a note so nothing gets missed.</div>
+          <div class="acc-step">If your promotion clearly stated an expiration date but you forgot to remove it — you are not required to honor it. But leaving expired offers visible still looks unprofessional.</div>
+          <div class="acc-step">If your promotion had no expiration date — whether intentional or not — you are expected to honor it until you actively remove it.</div>
+          <div class="offer-warning" style="margin-top:8px"><strong>Simple Rule</strong>When it's over, take it down immediately.</div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" id="a-net3">
+      <div class="acc-header" onclick="toggleAcc('a-net3')">
+        <div class="acc-check" onclick="toggleDone(event,'a-net3')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">3. Personal DMs to friends and family on social media</div>
+          <div class="acc-meta"><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+
+          <div class="acc-detail-label">Why DMs Work Differently Than Texts</div>
+          <div class="acc-detail-text">A text feels personal because it lands in a private space someone checks constantly. A DM lands in a feed full of noise. The message has to be tighter, the tone has to be cooler, and it has to feel like an insider tip — not a sales pitch. The goal is to make them feel like you thought of them specifically, not like they are number 47 on a list.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Who To DM and Where</div>
+          <div class="acc-step"><strong style="color:var(--text)">Instagram first</strong> — highest engagement, most natural place for beauty services</div>
+          <div class="acc-step"><strong style="color:var(--text)">Facebook second</strong> — especially effective for slightly older demographics</div>
+          <div class="acc-step"><strong style="color:var(--text)">TikTok third</strong> — if you have followers who engage with your content regularly</div>
+
+          <div class="acc-detail-label" style="margin-top:12px">Who To Prioritize</div>
+          <div class="acc-step">People who already follow you and engage with your content — they already like what you do</div>
+          <div class="acc-step">People you know personally who do not yet follow you</div>
+          <div class="acc-step">Anyone who has ever commented on or saved your posts</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Choose Your Script</div>
+          <div class="acc-detail-text" style="margin-bottom:12px">Pick the one that sounds most like you. The more natural it feels when you read it, the more natural it will feel to the person receiving it. You can use different scripts for different people.</div>
+
+          <div class="inner-acc">
+
+            <div class="inner-acc-item" id="inner-dm1">
+              <div class="inner-acc-header" onclick="toggleInner('inner-dm1')">
+                <span class="inner-acc-title">📱 Script 1 — The Insider Tip</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">Best for people who follow you but you are not particularly close to. Feels like a favor, not a pitch.</div>
+                <div class="script-box">
+                  Hey <span class="script-placeholder">[Name]</span> — wanted to make sure you saw this before it fills up. I just started taking clients at Cio Bela Salons and I am running <span class="script-placeholder">[your offer]</span> for a limited time for new clients. Figured you would want to know. Link in my bio if you want to claim it — no pressure at all.
+                </div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-dm2">
+              <div class="inner-acc-header" onclick="toggleInner('inner-dm2')">
+                <span class="inner-acc-title">📱 Script 2 — The Soft Introduction</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">Best for people you know but have not spoken to in a while. Warm but not overly familiar.</div>
+                <div class="script-box">
+                  Hi <span class="script-placeholder">[Name]</span>! Hope things are good with you. I recently launched my <span class="script-placeholder">[your service — ex: nail / waxing]</span> career at Cio Bela Salons in The Woodlands and I am currently offering <span class="script-placeholder">[your offer]</span> to new clients. Just wanted to put it on your radar in case you have been looking for someone. Promo details are in my bio if you are interested.
+                </div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-dm3">
+              <div class="inner-acc-header" onclick="toggleInner('inner-dm3')">
+                <span class="inner-acc-title">📱 Script 3 — The One Liner</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">Best for people who are active on social media and respond better to short, punchy messages.</div>
+                <div class="script-box">
+                  Hey <span class="script-placeholder">[Name]</span> — just launched at Cio Bela Salons and have a new client offer running right now. Details in my bio if it is something you would be interested in. 👌
+                </div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-dm4">
+              <div class="inner-acc-header" onclick="toggleInner('inner-dm4')">
+                <span class="inner-acc-title">📱 Script 4 — The Confident Announcement</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">Best for someone who knows you exist but you have never really spoken. No over-explaining, just confidence.</div>
+                <div class="script-box">
+                  Hey <span class="script-placeholder">[Name]</span>! I just joined the team at Cio Bela Salons in The Woodlands as a <span class="script-placeholder">[your service]</span> artist and I have a new client offer available right now. Wanted to make sure it got in front of the right people. Claim it through the link in my bio before it is gone. 🖤
+                </div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-dm5">
+              <div class="inner-acc-header" onclick="toggleInner('inner-dm5')">
+                <span class="inner-acc-title">📱 Script 5 — The "Thought of You" Message</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">Best for someone whose posts suggest they would genuinely be interested in your service. Personal without being too familiar.</div>
+                <div class="script-box">
+                  Hey <span class="script-placeholder">[Name]</span>! I do not know if you have been looking but I just started taking <span class="script-placeholder">[your service]</span> clients at Cio Bela Salons in The Woodlands. I have a limited new client offer going right now and honestly thought of you when I was reaching out. All the details are in my bio — would love to have you come in.
+                </div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-dm6">
+              <div class="inner-acc-header" onclick="toggleInner('inner-dm6')">
+                <span class="inner-acc-title">📱 Script 6 — The No Fluff</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">Best for someone who you sense would appreciate directness over small talk. Clean, confident, to the point.</div>
+                <div class="script-box">
+                  Hey <span class="script-placeholder">[Name]</span> — new <span class="script-placeholder">[your service]</span> artist at Cio Bela Salons in The Woodlands. Running a new client offer right now — link in bio if you want the details. Would love to see you in the chair. 💅
+                </div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-dm7">
+              <div class="inner-acc-header" onclick="toggleInner('inner-dm7')">
+                <span class="inner-acc-title">📱 Script 7 — The One Follow Up</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:8px">Send this only once if they did not respond to your first message — then leave it alone. One follow up is plenty.</div>
+                <div class="script-box">
+                  Hey <span class="script-placeholder">[Name]</span> — just wanted to make sure this did not get buried. The offer I mentioned is only available for a limited time. No worries at all if the timing is not right — just did not want you to miss it.
+                </div>
+              </div></div>
+            </div>
+
+          </div><!-- /script inner accordions -->
+
+          <div class="acc-detail-label" style="margin-top:16px">Action Steps</div>
+          <div class="acc-step">Go through your followers list on Instagram and identify everyone you actually know personally — start there</div>
+          <div class="acc-step">Work through Facebook next — check your friends list for people in your area</div>
+          <div class="acc-step">Keep every message short — DMs are not the place for long paragraphs</div>
+          <div class="acc-step">Do not copy and paste the exact same message to everyone — change at least the name and one small detail so it feels personal</div>
+          <div class="acc-step">If someone responds with interest — reply quickly. A slow response kills the momentum.</div>
+          <div class="acc-step">Follow up one time only if they did not respond — then let it go and move on to the next person</div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Discovery Platforms -->
+  <div class="section-group">
+    <div class="section-label">📲 Discovery Platforms</div>
+
+    <div class="acc-item" id="a-grp1">
+      <div class="acc-header" onclick="toggleAcc('a-grp1')">
+        <div class="acc-check" onclick="toggleDone(event,'a-grp1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">4. Get listed on Groupon</div>
+          <div class="acc-meta"><span class="urgent-tag">High Visibility</span><span class="acc-tag">Commission-Based</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+
+          <div class="acc-detail-label">Why Groupon</div>
+          <div class="acc-detail-text">When you are starting from zero, visibility is everything. Groupon has millions of active users searching for exactly what you offer right now — in your city, in your service category, today. That kind of exposure is nearly impossible to build on your own in the early stages. Getting listed on Groupon is not about discounting your worth. It is about putting yourself in front of people who would never have found you otherwise and turning them into loyal full-price clients.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">The Strategy</div>
+          <div class="acc-detail-text">Groupon is a tool — and like any tool it works best when you use it with intention. You are in control of how you use it, how long you run it, and when you decide to stop. The artists who get the most out of Groupon treat every single appointment as an audition for a full-price loyal client. They show up with their best work, deliver a top-tier experience, and leave that client with no reason to go anywhere else. That is the strategy. Groupon fills the chair. You fill the book.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">The Trade-Off</div>
+          <div class="acc-detail-text" style="margin-bottom:14px">Marketing is one of the most expensive parts of running any business. Studies show that acquiring a new client can cost anywhere from 5 to 25 times more than retaining an existing one. Every business pays for new clients one way or another. The question is not whether you pay — it is how you pay.</div>
+
+          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+
+            <div style="background:rgba(255,100,100,0.06); border:1px solid rgba(255,100,100,0.2); border-radius:12px; padding:16px 18px;">
+              <div style="font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.2em; color:#E87070; margin-bottom:8px;">💸 OPTION 1 — PAY FINANCIALLY</div>
+              <div style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:6px;">Paid Ads</div>
+              <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">Facebook, Instagram, and Google ads are effective but expensive. A modest campaign runs $300–$500 per month with no guaranteed results — especially before you have reviews and an established following to convert strangers into bookings.</div>
+            </div>
+
+            <div style="background:rgba(255,200,80,0.06); border:1px solid rgba(255,200,80,0.2); border-radius:12px; padding:16px 18px;">
+              <div style="font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.2em; color:#C8A84B; margin-bottom:8px;">⏳ OPTION 2 — PAY WITH TIME</div>
+              <div style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:6px;">Slow Organic Growth</div>
+              <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">Post consistently, build your following, wait for people to find you. This works — but it is slow. Very slow. An empty chair for weeks or months has a very real cost that is easy to underestimate when you are just starting out.</div>
+            </div>
+
+            <div style="background:rgba(201,168,92,0.08); border:1px solid rgba(201,168,92,0.35); border-radius:12px; padding:16px 18px;">
+              <div style="font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.2em; color:var(--gold); margin-bottom:8px;">✦ OPTION 3 — PAY WITH YOUR SERVICE</div>
+              <div style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:6px;">Groupon</div>
+              <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">You perform the service at a deeply discounted rate. In return you get a real person in your chair, a chance to show what you can do, and an opportunity to convert them into a full-price loyal client. You are trading a discounted appointment for a marketing result. None of these options is free. Groupon is simply a different form of the investment every new artist has to make.</div>
+            </div>
+
+          </div>
+
+          <div class="acc-detail-label" style="margin-top:16px">The Honest Math</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">Before you list on Groupon you need to understand exactly what you are agreeing to so there are no surprises.</div>
+          <div class="acc-step">You set a promotional price for your service — typically 40–50% off your regular rate</div>
+          <div class="acc-step">Groupon then takes approximately 50% of that already discounted price</div>
+          <div class="acc-step">What you receive is roughly 25% of your original service price</div>
+          <div class="script-box" style="font-style:normal; margin-top:10px; margin-bottom:10px">
+            <div style="margin-bottom:6px">Your service normally costs: <span class="script-placeholder">$100</span></div>
+            <div style="margin-bottom:6px">You list it on Groupon at: <span class="script-placeholder">$50</span></div>
+            <div style="margin-bottom:6px">Groupon takes: <span class="script-placeholder">$25</span></div>
+            <div>You receive: <span class="script-placeholder">$25</span></div>
+          </div>
+          <div class="acc-detail-text">That is the reality of the platform. Now that you understand the strategy and the trade-off, you can decide whether that math makes sense for where you are right now.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Use Your Own Business Name — Not Cio Bela</div>
+          <div class="acc-detail-text">When listing on Groupon each artist should use their own personal business name — not Cio Bela Salons. This prevents Groupon from flagging multiple listings from the same location as duplicate accounts.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">What To List — Your Choice</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">There is no one right answer here. Think carefully about what makes sense for your specific services and price point.</div>
+
+          <div class="inner-acc">
+
+            <div class="inner-acc-item" id="inner-grp4">
+              <div class="inner-acc-header" onclick="toggleInner('inner-grp4')">
+                <span class="inner-acc-title">📋 Entry-Level or Introductory Services Only</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-label">Pros</div>
+                <div class="acc-step">Lower risk — you are not giving away your best work at a fraction of the price</div>
+                <div class="acc-step">Gets someone in the door at a low commitment price point</div>
+                <div class="acc-step">Upsell opportunity — once they experience your work they may book premium services at full price</div>
+                <div class="acc-detail-label">Cons</div>
+                <div class="acc-step">Lower priced services attract lower price expectations</div>
+                <div class="acc-step">Entry level services may not stand out enough in a crowded Groupon marketplace to get clicks</div>
+                <div class="acc-step">If your entry level service is not visually impressive enough to wow them, the rebooking conversion rate may be lower</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-grp5">
+              <div class="inner-acc-header" onclick="toggleInner('inner-grp5')">
+                <span class="inner-acc-title">💎 Premium or Top-Tier Services</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-label">Pros</div>
+                <div class="acc-step">Attracts clients who actually want that service — higher intent, higher likelihood of returning</div>
+                <div class="acc-step">Your best work gets showcased — stronger wow factor, stronger rebooking potential</div>
+                <div class="acc-step">More compelling listing that stands out and gets more clicks</div>
+                <div class="acc-detail-label">Cons</div>
+                <div class="acc-step">You are performing your highest value service at roughly 25 cents on the dollar</div>
+                <div class="acc-step">If they do not rebook it stings more financially</div>
+                <div class="acc-step">Risk of attracting clients who specifically seek out premium services on discount and never pay full price</div>
+              </div></div>
+            </div>
+
+          </div>
+
+          <div class="offer-warning" style="margin-top:12px; margin-bottom:16px">
+            <strong>✦ The Bottom Line</strong>
+            Choose the service you are most confident in, most proud of, and most likely to convert someone into a loyal returning client. That is your Groupon service — regardless of where it falls on your price list.
+          </div>
+
+          <div class="acc-detail-label">Your Photos Matter More Than You Think</div>
+          <div class="acc-detail-text">On Groupon your photos are your first impression. A client scrolling through listings will click the one with the most compelling, professional looking work. This is not the place for blurry phone photos. Choose your absolute best before and after shots. If you need help selecting photos or want guidance on how to present your work visually on your listing — reach out to Shawntavia. Content always matters, and your Groupon listing is no different.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">The Client Experience Is Everything</div>
+          <div class="acc-detail-text" style="margin-bottom:8px">A Groupon client deserves the exact same level of care, attention, and quality as a full price client. No exceptions. They are not a discount client — they are an audition. Every Groupon appointment is an opportunity to earn a loyal full-price regular.</div>
+          <div class="acc-step">Deliver top-tier work</div>
+          <div class="acc-step">Make them feel genuinely welcome and taken care of</div>
+          <div class="acc-step">Have a natural rebooking conversation before they leave</div>
+          <div class="acc-step">Leave them with no reason to go anywhere else</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">The Rebooking Conversation</div>
+          <div class="acc-detail-text" style="margin-bottom:8px">This is the most important moment of the entire Groupon experience. Before they leave your chair — rebook them. At full price. Naturally and confidently.</div>
+          <div class="script-box">
+            <span class="script-placeholder">"I would love to have you back — let's go ahead and get you on the books now while we are together. My schedule fills up pretty quickly."</span>
+          </div>
+
+          <div class="acc-detail-label" style="margin-top:16px">One Important Fine Print Detail</div>
+          <div class="acc-detail-text">In your Groupon listing settings make sure to specify that the voucher can only be purchased once per customer. This prevents clients from returning repeatedly on Groupon instead of booking at full price. You want the Groupon to be a door opener — not a permanent discount program.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">A Note on Deal Hunters</div>
+          <div class="acc-detail-text">Some Groupon clients will come in, use the voucher, and never return regardless of how exceptional the experience was. This is a reality of the platform. Do not take it personally and do not let it affect the quality of service you deliver. Every client who walks through that door is a chance — and even if one does not return, the next one might become your most loyal regular. Play the long game.</div>
+
+          <div class="offer-warning" style="margin-top:16px; border-color: rgba(201,168,92,0.6); background: rgba(201,168,92,0.12);">
+            <strong>⚠️ Important — Booking Instructions Pending</strong>
+            There is currently an open question about how Groupon clients will book their appointment without being charged a deposit through our existing system. This is being resolved. You will receive specific booking instructions for your Groupon clients before your listing goes live. Do not activate your Groupon listing until you have received those instructions from Shawntavia.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- In the Salon -->
+  <div class="section-group">
+    <div class="section-label">💅 In the Salon — Right Now</div>
+
+    <div class="acc-item" id="a-sal1">
+      <div class="acc-header" onclick="toggleAcc('a-sal1')">
+        <div class="acc-check" onclick="toggleDone(event,'a-sal1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">5. Introduce yourself to all three hairstylists</div>
+          <div class="acc-meta"><span class="urgent-tag">This Week</span><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+
+          <div class="acc-detail-label">Why This Is Your Biggest Unfair Advantage</div>
+          <div class="acc-detail-text">Most artists starting from zero have nothing but their phone contacts and a social media page. You have something most people in this industry would never have access to at this stage — three established professionals with 20+ years of loyal clients sitting in their chairs every single day, in the same building you work in. A genuine personal recommendation from a stylist a client has trusted for years is worth more than any ad, any post, or any platform listing. This relationship, if built properly, can fill your book faster than almost anything else on this list. Do not take it for granted.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Shawntavia Will Create Opportunities</div>
+          <div class="acc-detail-text">You will not always have to find the right moment on your own. Shawntavia will intentionally create group moments — like the Matcha drink vendor that came into the salon — where introductions feel natural and expected rather than forced. These are your open doors. When they happen, show up, be present, be warm, and make an impression. The relationship you build after that is entirely up to you.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Show Up Even When You Have Nothing Scheduled</div>
+          <div class="acc-detail-text">You do not have to wait until you have a client booked to come into the salon. Some of your most valuable time early on will be spent simply being present — getting to know the stylists, being visible to their clients, and building familiarity with the space and the team. When a client sitting in a stylist's chair sees you, hears your name, or simply notices you being warm and professional in the space — a seed gets planted. You do not have to say a word. Presence alone builds recognition and recognition builds trust. Come in on your off days. Bring your portfolio. Work on your craft. Be the person who is always there, always prepared, and always easy to be around. That person gets recommended.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">How To Approach the Interaction</div>
+          <div class="acc-detail-text" style="margin-bottom:12px">This is not a pitch and it is not a disruption. It is a brief, warm, genuine human moment. Keep it short. Keep it light. Get in and get out without interfering with the stylist or their client.</div>
+
+          <div class="inner-acc">
+
+            <div class="inner-acc-item" id="inner-sal1">
+              <div class="inner-acc-header" onclick="toggleInner('inner-sal1')">
+                <span class="inner-acc-title">✦ Step 1 — Greet the Stylist</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">Walk up naturally when there is a brief opening in conversation. Say hello, check in, keep it brief and genuine. Whether it is your first introduction or just a casual check-in, same warm energy either way. They will almost always have a client in their chair — that is expected and perfectly fine.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-sal2">
+              <div class="inner-acc-header" onclick="toggleInner('inner-sal2')">
+                <span class="inner-acc-title">✦ Step 2 — Turn to the Client</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:10px">Whether the stylist introduces you or not — turn to the client, smile, and hand them a card. Keep it simple and confident:</div>
+                <div class="script-box">
+                  "Hi, I just wanted to say hello — I am <span class="script-placeholder">[your name]</span> and I do <span class="script-placeholder">[your service]</span> here at the salon. I would love to leave you with this."
+                </div>
+                <div class="acc-detail-text" style="margin-top:8px">Hand the card directly to the client — not just to the stylist. The client is the one who is going to book.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-sal3">
+              <div class="inner-acc-header" onclick="toggleInner('inner-sal3')">
+                <span class="inner-acc-title">✦ Step 3 — Let Them Lead</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">If the client engages and wants to know more — great, continue naturally. If they smile and go back to their appointment — perfect, smile back and move on. No lingering, no pressure. The whole interaction should feel like 30 seconds because it should be.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-sal4">
+              <div class="inner-acc-header" onclick="toggleInner('inner-sal4')">
+                <span class="inner-acc-title">✦ Step 4 — Get Out of the Way</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">Let the stylist get back to their client. A brief warm presence is memorable. Overstaying your welcome is not.</div>
+              </div></div>
+            </div>
+
+          </div>
+
+          <div class="acc-detail-label" style="margin-top:16px">The Promotional Card</div>
+          <div class="acc-detail-text" style="margin-bottom:8px">Having something physical to hand the client makes the whole interaction natural and purposeful. Your card should include:</div>
+          <div class="acc-step">Your name and service specialty</div>
+          <div class="acc-step">Your current first-time client offer</div>
+          <div class="acc-step">Your booking link or promo page link</div>
+          <div class="acc-step">A QR code that goes directly to the promo page so they can scan it on the spot</div>
+          <div class="offer-warning" style="margin-top:10px; margin-bottom:16px">
+            <strong>⚠️ Your Card Needs To Look Professional</strong>
+            These cards represent you. A poorly made card does more harm than no card at all. Reach out to Shawntavia if you need help with design or printing.
+          </div>
+
+          <div class="acc-detail-label">How To Keep the Stylist Relationship Going</div>
+          <div class="acc-detail-text" style="margin-bottom:8px">A one-time introduction means nothing on its own. The relationship is built over time through small consistent actions:</div>
+          <div class="acc-step">Say good morning when you arrive</div>
+          <div class="acc-step">Celebrate their wins — compliment their work genuinely</div>
+          <div class="acc-step">Refer your own clients to them when it makes sense</div>
+          <div class="acc-step">Be a good colleague and a good energy in the space</div>
+          <div class="acc-detail-text" style="margin-top:8px">When they feel like you genuinely care about them and not just what they can do for your book — the referrals will come naturally.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">What Not To Do</div>
+          <div class="acc-step">Do not interrupt them while they are actively focused on a client</div>
+          <div class="acc-step">Do not hover or linger after your interaction</div>
+          <div class="acc-step">Do not make every interaction about your services</div>
+          <div class="acc-step">Do not ask for referrals before you have built any real rapport</div>
+          <div class="acc-step">Do not take it personally if it takes time — trust is earned, not given</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">The Long Game</div>
+          <div class="acc-detail-text" style="margin-bottom:16px">The stylists who refer clients to you will do so because they genuinely like you, trust your work, and believe their clients will be taken care of. That does not happen overnight. Show up every day as someone worth recommending — and the recommendations will come.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">When a Stylist Introduces You</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">This is the moment you have been building toward — a stylist you have invested in genuinely turns to their client and introduces you by name. Do not fumble it. Be ready.</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">When it happens — smile, step forward naturally, make eye contact with the client and take it from there. You already know what to say:</div>
+          <div class="script-box" style="margin-bottom:10px">
+            "Hi <span class="script-placeholder">[Name]</span>, so nice to meet you — I am <span class="script-placeholder">[your name]</span> and I do <span class="script-placeholder">[your service]</span> here at the salon. I would love to leave you with one of these."
+          </div>
+          <div class="acc-detail-text" style="margin-bottom:10px">Hand the card. Let them lead. Keep it brief so the stylist can get back to their client. The most important thing in this moment is to not make it weird. Do not oversell, do not ramble, do not make the stylist regret introducing you. A warm confident 30-second interaction is all you need. The card does the rest.</div>
+          <div class="acc-detail-text">Whenever you are at the salon — whether you have appointments or not — keep your cards on you. You never know when an introduction is going to happen. You may not always need them, but you will absolutely regret not having them when the moment comes.</div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" id="a-sal2">
+      <div class="acc-header" onclick="toggleAcc('a-sal2')">
+        <div class="acc-check" onclick="toggleDone(event,'a-sal2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">6. Offer hairstylists a referral incentive</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+
+          <div class="acc-detail-label">Why This Matters</div>
+          <div class="acc-detail-text">The stylists do not owe you referrals. They are busy professionals with their own clients, their own goals, and their own day to manage. Offering a genuine incentive — whether it is a service, a treat, or simply being a great colleague who gives back — is how you make referring you feel worth their while. It does not have to be expensive or complicated. It just has to be thoughtful and real.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Choose What Feels Right for You</div>
+          <div class="acc-detail-text">There is no one size fits all approach here. Pick the option that feels most natural for your personality and your relationship with each stylist. What works beautifully with one person may feel awkward with another. Read the room and lead with what feels genuine.</div>
+
+          <div class="inner-acc" style="margin-top:14px">
+
+            <div class="inner-acc-item" id="inner-ref1">
+              <div class="inner-acc-header" onclick="toggleInner('inner-ref1')">
+                <span class="inner-acc-title">✦ Service Exchange</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:10px">Offer to do their nails or waxing in exchange for referrals. This is one of the most powerful options because it does two things at once — it shows your appreciation and it lets them experience your work firsthand. A stylist who has actually sat in your chair and loved the results will recommend you completely differently than one who has never tried your services. They become a genuine advocate, not just someone doing you a favor.</div>
+                <div class="script-box">
+                  "Hey, I would love to do your nails sometime as a thank you for sending clients my way. Seriously — just let me know."
+                </div>
+                <div class="acc-detail-text" style="margin-top:8px">Keep it casual, keep it genuine. No contracts, no formalities.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-ref2">
+              <div class="inner-acc-header" onclick="toggleInner('inner-ref2')">
+                <span class="inner-acc-title">✦ Treats and Thoughtful Gestures</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text" style="margin-bottom:10px">Keep a mental note of what each stylist loves — their favorite coffee order, a snack they always mention, a small gift that fits their personality. After they send a few clients your way, show up with something that says you noticed and you are grateful. The thoughtfulness matters more than the dollar amount.</div>
+                <div class="acc-step">Their favorite coffee or matcha on a random morning</div>
+                <div class="acc-step">A sweet treat or snack for the whole team after a great week</div>
+                <div class="acc-step">A small personalized gift after a milestone number of referrals</div>
+                <div class="acc-detail-text" style="margin-top:8px">Whatever you decide to do — follow through. Consistency and reliability are what turn a small gesture into a real relationship.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-ref3">
+              <div class="inner-acc-header" onclick="toggleInner('inner-ref3')">
+                <span class="inner-acc-title">✦ The Mutual Referral</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">This one costs nothing and may mean the most. When your clients mention they need their hair done — recommend that stylist by name. Personally. Enthusiastically. Send them business the same way you are hoping they send you business. This signals that you see this as a genuine partnership and not a one way street. People notice when you show up for them without being asked.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-ref4">
+              <div class="inner-acc-header" onclick="toggleInner('inner-ref4')">
+                <span class="inner-acc-title">✦ A Genuine Thank You</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">Never underestimate the power of a heartfelt thank you. A handwritten note, a genuine verbal acknowledgment, or simply telling them how much a referral meant to you goes a long way. Some people are not motivated by gifts or services — they just want to feel seen and appreciated. Do not skip this step regardless of what else you do.</div>
+              </div></div>
+            </div>
+
+          </div>
+
+          <div class="acc-detail-label" style="margin-top:16px">A Note on Follow-Through</div>
+          <div class="acc-detail-text">Whatever you offer — mean it. A forgotten gesture does more damage to the relationship than never offering anything at all. Start small if you need to, but be consistent. That consistency is what builds the kind of trust that turns into a steady stream of warm referrals over time.</div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" id="a-sal3">
+      <div class="acc-header" onclick="toggleAcc('a-sal3')">
+        <div class="acc-check" onclick="toggleDone(event,'a-sal3')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">7. Load your best content onto tablets and the digital display</div>
+          <div class="acc-meta"><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+
+          <div class="acc-detail-label">Why This Matters</div>
+          <div class="acc-detail-text">Every client sitting in this salon is a captive audience. While they are waiting, while they are getting their hair done, while they are sitting at any station — they are looking around. Your work on the digital display and the tablets at the hairstylist stations is a silent salesperson that works for you every single day without you having to say a word. A client who sees your work on the display and then gets introduced to you moments later is already warmed up. That is a powerful combination.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">You Do Not Have To Load It — But You Do Have To Create It</div>
+          <div class="acc-detail-text">Shawntavia will handle loading content onto the digital display and the salon tablets. Your job is to create the content that goes on them. This is not a one time task. The display needs to stay fresh, current, and reflective of your best and most recent work. Stale content gets ignored. Fresh content sparks conversations.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Content Creation Is a Team Sport Here</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">One of the biggest advantages of being part of the Cio Bela team is that you are not carrying the content burden alone. A single artist trying to consistently create, film, edit, and post high quality content on their own is an exhausting full time job on top of an already full time job. Here you have a team. That changes everything.</div>
+          <div class="acc-detail-text">Shawntavia will be building a content creation schedule — specific content will be requested of each artist within specific time frames. This ensures that everyone always has fresh content to share on their individual platforms, and that the digital display and salon tablets stay consistently updated with compelling work across all service categories.</div>
+
+          <div class="offer-warning" style="margin-top:14px; margin-bottom:14px; border-color: rgba(201,168,92,0.6); background: rgba(201,168,92,0.12);">
+            <strong>⚡ Time Frames Are Not Suggestions</strong>
+            When content is requested of you within a specific time frame — that deadline matters. The display schedule, the team's social media cadence, and the salon's overall content strategy depend on everyone delivering on time. Missing a deadline does not just affect you — it affects the whole team. Treat requested content like a client appointment. It goes on the calendar and it gets done.
+          </div>
+
+          <div class="acc-detail-label">What the Schedule Will Look Like</div>
+          <div class="acc-detail-text" style="margin-bottom:8px">Details on the content creation schedule are coming. When it is ready you will receive clear direction on what type of content is being requested, which time frame it needs to be created in, and how to submit it.</div>
+          <div class="acc-detail-text">Until then — start filming your work now. Every appointment is an opportunity. Before and afters, in-progress shots, finished results. Get in the habit of documenting your work at every single appointment. You can never have too much content.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">You Are Still Free To Create Whatever You Want</div>
+          <div class="acc-detail-text">The content schedule covers what the team needs collectively. It does not replace your individual creativity. You are absolutely free to post whatever additional content you want on your own platforms — tutorials, personal posts, behind the scenes, anything that feels authentic to you. The schedule is a floor, not a ceiling.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">You Do Not Have To Edit It</div>
+          <div class="acc-detail-text">When content is requested of you, you are not required to edit it. Editing is time consuming and not everyone has those skills — and that is completely fine. What is required is clean, quality raw footage that is exactly what was asked for. Deliver that and the rest will be handled. Focus on capturing it well — good lighting, steady shot, clean background — and you have done your part.</div>
+
+          <div class="offer-warning" style="margin-top:14px; border-color: rgba(201,168,92,0.6); background: rgba(201,168,92,0.12);">
+            <strong>⚡ Quality Is Non-Negotiable</strong>
+            The content that goes on the salon display and tablets represents Cio Bela as a whole — and it represents you. It needs to look good. Clean backgrounds, good lighting, sharp and clear photos and videos. Blurry, dark, or poorly framed content will not be used. If you are unsure whether something meets the standard — ask before submitting. It is always better to check than to have something represent you that does not reflect your best work.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" id="a-sal5">
+      <div class="acc-header" onclick="toggleAcc('a-sal5')">
+        <div class="acc-check" onclick="toggleDone(event,'a-sal5')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">8. Rebook every single client before they leave</div>
+          <div class="acc-meta"><span class="urgent-tag">Non-Negotiable</span><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+
+          <div class="acc-detail-label">Why This Is Non-Negotiable</div>
+          <div class="acc-detail-text">Getting a client in once means nothing if they do not come back. The single most powerful thing you can do at the end of every appointment is secure the next one before they walk out the door. A client who leaves without a next appointment booked is a client you have to re-win. A client who leaves with one already scheduled — and a deposit paid — is a loyal regular in the making. Do this every single time, no exceptions.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">The Script</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">Keep it warm, confident, and natural. You are not asking permission — you are assuming they want to come back because you just did great work.</div>
+          <div class="script-box">
+            "Let's go ahead and get you on the books for next time — my schedule fills up pretty quickly and I want to make sure you can get the time that works best for you."
+          </div>
+
+          <div class="acc-detail-label" style="margin-top:16px">How To Make It Seamless — The Text Message System</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">A verbal rebook means nothing if they walk out and forget to actually book. The goal is to get them booked, deposit paid, and waiver captured before they leave. Here is how to make that happen every single time:</div>
+
+          <div class="acc-step">Before the appointment wraps up — find your client's phone number. It is already saved in your calendar under their name in the notes section.</div>
+          <div class="acc-step">While they are still in your chair — open a new text message, enter their number, and type the booking link. Have it ready to send before the appointment ends.</div>
+          <div class="acc-step">The moment the appointment is finished and they are happy — deliver your script and hit send at the same time. Their phone buzzes with the link right as you are speaking.</div>
+          <div class="acc-step">While they are still with you say — <em style="color:var(--text-mid)">"I just sent you the booking link — if you want to go ahead and lock in your spot right now I will wait. It only takes a second."</em></div>
+          <div class="acc-step">They book on the spot, the deposit is collected through the system automatically, their waiver is captured, and the appointment is locked in.</div>
+
+          <div class="offer-warning" style="margin-top:14px; margin-bottom:14px; border-color: rgba(201,168,92,0.6); background: rgba(201,168,92,0.12);">
+            <strong>⚡ Why the Deposit Matters</strong>
+            A client who books and pays a deposit before they leave is significantly more likely to show up than one who says they will book later. The deposit creates commitment. The in-person moment creates urgency. Together they are your most powerful rebooking tool.
+          </div>
+
+          <div class="acc-detail-label">The Card Moment</div>
+          <div class="acc-detail-text" style="margin-bottom:8px">Once they are booked and on their way out — hand them an extra card with a warm ask:</div>
+          <div class="script-box">
+            "If you know anyone who might love this — feel free to pass that along. I would love the referral."
+          </div>
+          <div class="acc-detail-text" style="margin-top:8px">Keep it casual. They are already happy with you. That is the perfect moment to plant a referral seed.</div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Online -->
+  <div class="section-group">
+    <div class="section-label">📱 Online — Start Immediately</div>
+
+    <div class="acc-item" id="a-onl1">
+      <div class="acc-header" onclick="toggleAcc('a-onl1')">
+        <div class="acc-check" onclick="toggleDone(event,'a-onl1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">9. Join local Facebook groups and start posting</div>
+          <div class="acc-meta"><span class="urgent-tag">This Week</span><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+
+          <div class="acc-detail-label">Why This Matters</div>
+          <div class="acc-detail-text">These are not random strangers on the internet. These are your neighbors, your potential clients, and the exact community you are trying to reach — all gathered in one place, actively asking for recommendations, looking for local services, and talking to each other every single day. Consistently showing up in these groups will dramatically transform your local exposure in a way that almost nothing else can match at zero cost.</div>
+
+          <div class="offer-warning" style="margin-top:14px; margin-bottom:14px; border-color: rgba(201,168,92,0.6); background: rgba(201,168,92,0.12);">
+            <strong>⚡ This Is Part of Your Job</strong>
+            Scrolling Facebook may not be your favorite way to spend your time — and that is understandable. But this is not optional leisure. This is a real and important part of building your client base and it will pay off in ways that compound over time. Treat it that way.
+          </div>
+
+          <div class="acc-detail-label">Your Facebook Profile First</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">Before you start posting in any group make sure your Facebook profile reflects who you are professionally. People will click on your name before they decide whether to trust your recommendation or book your service.</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">You do not need a full portfolio to do this. Start with photos that simply show you in a good light — a clean photo where you look put together, anything that presents a positive and professional first impression. As you create more content at the salon keep adding it consistently. Professional content is always the priority but any photo that represents you well is a step in the right direction.</div>
+          <div class="acc-detail-text">If you want to push older less relevant posts further down — simply post more going forward. The more you post the further back everything else gets pushed. You do not have to delete anything.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">A Note on New Accounts and Private Groups</div>
+          <div class="acc-detail-text">Several of these groups are private and require admin approval. Brand new Facebook accounts with no post history are frequently denied by group admins who flag them as potential spam. Your existing personal account — even cleaned up — is far more likely to be approved. If you do create a new professional account, spend a few weeks building genuine activity before requesting to join private groups.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">The Groups — Join All of Them</div>
+          <div class="acc-detail-text" style="margin-bottom:14px">These nine groups represent a combined reach of nearly <strong style="color:var(--gold)">600,000 local people</strong> in your exact service area. That number is extraordinary.</div>
+
+          <div class="inner-acc">
+
+            <div class="inner-acc-item" id="inner-fb1">
+              <div class="inner-acc-header" onclick="toggleInner('inner-fb1')">
+                <span class="inner-acc-title">📘 All Things The Woodlands (except Politics) · 160,600 members</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                
+                <div class="acc-detail-text">Public group. The largest local Woodlands group on this list. Massive reach, highly active, and people are constantly asking for service recommendations. This one should be a priority.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-fb2">
+              <div class="inner-acc-header" onclick="toggleInner('inner-fb2')">
+                <span class="inner-acc-title">📘 I Love Conroe · 266,500 members</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                
+                <div class="acc-detail-text">Public group. The single largest group on this entire list. Conroe is right next door and full of potential clients actively seeking local services. Do not skip this one because it is not The Woodlands — the proximity makes it just as relevant.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-fb3">
+              <div class="inner-acc-header" onclick="toggleInner('inner-fb3')">
+                <span class="inner-acc-title">📘 I Love The Woodlands · 34,000 members</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                
+                <div class="acc-detail-text">Public group. One of the main community hubs for Woodlands residents. High activity and strong local engagement.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-fb4">
+              <div class="inner-acc-header" onclick="toggleInner('inner-fb4')">
+                <span class="inner-acc-title">📘 I love The Woodlands · 33,100 members</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                
+                <div class="acc-detail-text">Public group. A separate group from the one above — both are worth being active in as they have overlapping but distinct memberships.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-fb5">
+              <div class="inner-acc-header" onclick="toggleInner('inner-fb5')">
+                <span class="inner-acc-title">📘 Woodlands Girls Night Out #WGNO · 29,000 members</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                
+                <div class="acc-detail-text">Private group. One of the most active women's groups in the area. High engagement and exactly the audience you want. Requires admin approval — your existing account will be approved far faster than a new one.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-fb6">
+              <div class="inner-acc-header" onclick="toggleInner('inner-fb6')">
+                <span class="inner-acc-title">📘 Life in The Woodlands, TX · 20,500 members</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                
+                <div class="acc-detail-text">Private group. Active local community group. Requires admin approval.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-fb7">
+              <div class="inner-acc-header" onclick="toggleInner('inner-fb7')">
+                <span class="inner-acc-title">📘 Conroe Girls Who · 20,500 members</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                
+                <div class="acc-detail-text">Private group. A women's social club specifically for North Houston — your exact target demographic. Highly relevant and worth the effort to get approved.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-fb8">
+              <div class="inner-acc-header" onclick="toggleInner('inner-fb8')">
+                <span class="inner-acc-title">📘 The Woodlands Women's Collective · 9,500 members</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                
+                <div class="acc-detail-text">Private group. A curated women's community with strong engagement. Smaller than some of the others but the quality of connections here is high.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-fb9">
+              <div class="inner-acc-header" onclick="toggleInner('inner-fb9')">
+                <span class="inner-acc-title">📘 Friends of Oak Ridge North · 8,700 members</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                
+                <div class="acc-detail-text">Public group. Your most immediate local community. Smaller than the others but these are your closest neighbors — the people most likely to walk through the door. Never overlook your own backyard.</div>
+              </div></div>
+            </div>
+
+          </div>
+
+          <div class="acc-detail-label" style="margin-top:16px">How To Post — The Rules</div>
+          <div class="acc-detail-text" style="margin-bottom:8px">Most of these groups have posting guidelines. Read them before you post anything. Getting removed for breaking the rules means losing access to thousands of potential clients.</div>
+          <div class="acc-step">No spamming — do not post the same promotional content repeatedly</div>
+          <div class="acc-step">Lead with value — helpful posts, genuine recommendations, answering questions</div>
+          <div class="acc-step">Be a real community member — comment, engage, help people, not just promote</div>
+          <div class="acc-step">When you do post your services — make it warm, personal, and genuine. Not a flyer.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">What To Post</div>
+          <div class="acc-step">Before and after photos of your work with a warm personal caption</div>
+          <div class="acc-step">An introductory post — who you are, what you do, where you are located, and your current offer</div>
+          <div class="acc-step">Responses to service requests — when someone asks for a nail artist, waxing specialist, or any beauty service, respond immediately and personally</div>
+          <div class="acc-step">Engagement posts — tips, questions, relatable content that gets comments and keeps you visible</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">The Collective Mindset — Read This</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">When you see a post in any of these groups requesting a service that Cio Bela offers — even if it is not your specific service — tag the salon and include the website link. Always.</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">Someone comes in for waxing. While waiting they notice the nail station and book an appointment. That nail client brings her friend who becomes a lash client. That lash client's sister books waxing with you. One post that had nothing to do with your service just created a chain of new clients for you.</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">Passing up on a post because it is not your specific service means the exposure does not exist at all. One person coming in for another service could result in ten new clients for you over time. That person not coming to the salon at all because nobody tagged it means the potential has completely evaporated.</div>
+          <div class="acc-detail-text">The more people that walk through the Cio Bela door — for any reason — the better it is for everyone in the building.</div>
+
+          <div class="offer-warning" style="margin-top:14px; margin-bottom:14px; border-color: rgba(201,168,92,0.6); background: rgba(201,168,92,0.12);">
+            <strong>⚡ Always Include the Website Link</strong>
+            Every post. Every comment. Every time you mention Cio Bela in any group — include the website link directly. Do not just tag the salon and leave it at that. Tagging forces people to find the website themselves. A direct link removes every barrier. One tap and they are on the booking page. That is the difference between a booking and a missed opportunity.<br><br>
+            <strong style="color:var(--gold)">ciobelasalons.com</strong><br><br>
+            Copy it. Paste it. Every single time.
+          </div>
+
+          <div class="acc-detail-label">Why the Link Also Helps the Whole Salon</div>
+          <div class="acc-detail-text">Every time the salon's website is linked in a public post it sends a signal to Google and AI tools that the salon is active, relevant, and worth recommending. Enough of those signals over time genuinely improves where Cio Bela shows up in local search results and AI recommendations. Your consistent posting is not just filling your book — it is helping the entire salon's visibility grow.</div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" id="a-onl2">
+      <div class="acc-header" onclick="toggleAcc('a-onl2')">
+        <div class="acc-check" onclick="toggleDone(event,'a-onl2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">10. Start posting your work on social media</div>
+          <div class="acc-meta"><span class="urgent-tag">Start Now</span><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+
+          <div class="acc-detail-label">Why Starting Now Matters</div>
+          <div class="acc-detail-text">Every day you wait to post is a day the algorithm is not working for you. Social media platforms reward consistency and longevity — the longer your account has been active and posting regularly, the more people it gets shown to. Starting now, even with a small portfolio, is always better than waiting until everything feels ready. Everything will never feel ready. Start anyway.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Which Platforms To Focus On</div>
+
+          <div class="inner-acc" style="margin-top:10px">
+
+            <div class="inner-acc-item" id="inner-sm1">
+              <div class="inner-acc-header" onclick="toggleInner('inner-sm1')">
+                <span class="inner-acc-title">📸 Instagram — Your Priority</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">Instagram is the single most important platform for beauty professionals right now. It is visual, it is searchable, and it is where your ideal clients are spending the most time looking for inspiration and services. Your Instagram feed is essentially your portfolio — treat it that way.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-sm2">
+              <div class="inner-acc-header" onclick="toggleInner('inner-sm2')">
+                <span class="inner-acc-title">🎵 TikTok — Your Growth Engine</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">TikTok's algorithm is uniquely generous to new accounts. A brand new TikTok with zero followers can have a video reach thousands of local people overnight if the content is engaging. This is especially powerful when you are starting from scratch. Short process videos, before and afters, and behind the scenes content perform extremely well.</div>
+              </div></div>
+            </div>
+
+            <div class="inner-acc-item" id="inner-sm3">
+              <div class="inner-acc-header" onclick="toggleInner('inner-sm3')">
+                <span class="inner-acc-title">📘 Facebook Page — Your Community Presence</span>
+                <span class="inner-acc-arrow">▾</span>
+              </div>
+              <div class="inner-acc-body"><div class="inner-acc-body-inner">
+                <div class="acc-detail-text">Your Facebook Business Page supports your group activity and gives you a professional presence for clients who prefer Facebook over Instagram. It also feeds directly into the group posting strategy we already covered.</div>
+              </div></div>
+            </div>
+
+          </div>
+
+          <div class="acc-detail-label" style="margin-top:16px">What To Post When You Barely Have Content Yet</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">You do not need a full portfolio to start posting. Here is what you can post right now:</div>
+          <div class="acc-step"><strong style="color:var(--text)">Use your introductory video</strong> — we already filmed it. That is your first post. Put your face out there, tell people who you are, what you do, and where to find you. This builds connection faster than any photo.</div>
+          <div class="acc-step"><strong style="color:var(--text)">Your station or workspace</strong> — show where the magic happens. Clean, styled, professional.</div>
+          <div class="acc-step"><strong style="color:var(--text)">Your tools and products</strong> — a flat lay of your kit. Simple and effective.</div>
+          <div class="acc-step"><strong style="color:var(--text)">Your journey</strong> — you just started something new. That story is compelling. Share it authentically.</div>
+          <div class="acc-step"><strong style="color:var(--text)">A before and after from any appointment</strong> — even your very first client. You have to start somewhere.</div>
+          <div class="acc-step"><strong style="color:var(--text)">Behind the scenes</strong> — setting up, prepping, the process. People love seeing how it is done.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">You Are Not Doing This Alone</div>
+          <div class="acc-detail-text">A content creation schedule is being built for the entire team. Not every piece of content will fall on your shoulders — this is a collective effort and you will have direction, deadlines, and support to keep the content flowing consistently. When that schedule is in place it will take a significant amount of pressure off each individual artist. In the meantime — start with what you have and post consistently.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Post Every Service — Not Just Yours</div>
+          <div class="acc-detail-text">When you see content from the salon that features a service other than yours — share it, post it, engage with it. Someone who was not necessarily looking for your specific service might come in for something else entirely, fall in love with the salon, and end up referring five friends who are exactly your ideal client. Every post that puts Cio Bela in front of someone is a potential chain that could eventually lead back to you. Never scroll past an opportunity to put the salon in front of more people.</div>
+
+          <div class="acc-detail-label" style="margin-top:16px">The Caption Formula</div>
+          <div class="acc-detail-text" style="margin-bottom:10px">A great photo with a weak caption is a missed booking. Every caption should do three things — tell them what the service is, tell them how to get it, and make it feel human. Write how you talk. Not corporate. Not stiff. Like a real person who loves what they do.</div>
+          <div class="script-box">
+            <div style="margin-bottom:6px; font-style:normal; font-size:11px; color:var(--gold); font-family:'Cinzel',serif; letter-spacing:0.1em;">FORMULA</div>
+            [What you did] + [A detail that makes it special] + [A call to action with the link]
+          </div>
+          <div class="script-box" style="margin-top:8px">
+            <div style="margin-bottom:6px; font-style:normal; font-size:11px; color:var(--gold); font-family:'Cinzel',serif; letter-spacing:0.1em;">EXAMPLE</div>
+            "Fresh full set using <span class="script-placeholder">[product/technique]</span> — I am obsessed with how this turned out. New client spots are open right now — link in bio to book or grab my new client offer at ciobelasalons.com 💅"
+          </div>
+
+          <div class="acc-detail-label" style="margin-top:16px">Consistency Over Perfection</div>
+          <div class="acc-detail-text" style="margin-bottom:8px">The artists who grow the fastest are not the ones with the best photos. They are the ones who show up consistently. Three posts a week every week will always outperform ten posts in one week followed by silence for a month. Set a simple schedule and treat it like a client appointment — it is non-negotiable.</div>
+          <div class="acc-step">Minimum three posts per week on Instagram</div>
+          <div class="acc-step">At least one TikTok video per week</div>
+          <div class="acc-step">One post per week on your Facebook page</div>
+
+          <div class="offer-warning" style="margin-top:14px; border-color: rgba(201,168,92,0.6); background: rgba(201,168,92,0.12);">
+            <strong>⚡ Always Include the Booking Link</strong>
+            Every single post needs a clear call to action with the booking link. In your caption. In your bio. Every time. While your promotion is active your link in bio goes to the promo page. When your promotion ends it goes directly to the booking page. Never leave your bio link empty and never make someone work to figure out how to book you.<br><br>
+            <strong style="color:var(--gold)">ciobelasalons.com</strong>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /phase 1 -->
+
+
+<!-- ════════════════════════════════ PHASE 2 ════════════════════════════════ -->
+<div class="phase-content" id="phase-2">
+  <div class="phase-hero">
+    <div class="phase-badge" style="color:var(--phase2)">✦ Phase 2</div>
+    <div class="phase-timeframe">Days 31 – 60</div>
+    <h2 class="phase-title">Build <em>Momentum.</em><br>Use What You Have.</h2>
+    <p class="phase-desc">You have clients coming in now. This phase turns first-time visitors into loyal regulars and uses their energy to bring in more people around them.</p>
+  </div>
+
+  <div class="callout green">
+    <strong>🌱 Your Mindset This Phase</strong>
+    Shift from hustle mode into relationship mode. The hard part was getting them in. Now the work is making them stay — and making them talk.
+  </div>
+
+  <div class="phase-progress">
+    <div class="progress-label">PROGRESS</div>
+    <div class="progress-track"><div class="progress-fill" id="p2-fill" style="width:0%; background: linear-gradient(90deg,#4a7f52,#8FB896)"></div></div>
+    <div class="progress-count" style="color:var(--phase2)"><span id="p2-done">0</span>/<span id="p2-total">0</span></div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">⭐ Reviews & Reputation</div>
+
+    <div class="acc-item" id="b-rev1">
+      <div class="acc-header" onclick="toggleAcc('b-rev1')">
+        <div class="acc-check" onclick="toggleDone(event,'b-rev1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Ask every happy client for a Google or Facebook review</div>
+          <div class="acc-meta"><span class="urgent-tag">Every Appointment</span><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">How To Ask</div>
+        <div class="acc-detail-text">Details coming — the exact timing and wording that gets a yes without feeling awkward.</div>
+        <div class="acc-detail-label">Action Steps</div>
+        <div class="acc-step">Details coming — how to send the direct review link so it takes them 60 seconds.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="b-rev2">
+      <div class="acc-header" onclick="toggleAcc('b-rev2')">
+        <div class="acc-check" onclick="toggleDone(event,'b-rev2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Respond to every review you receive</div>
+          <div class="acc-meta"><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">How To Respond</div>
+        <div class="acc-detail-text">Details coming — response templates for positive reviews and how to handle negative ones professionally.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="b-rev3">
+      <div class="acc-header" onclick="toggleAcc('b-rev3')">
+        <div class="acc-check" onclick="toggleDone(event,'b-rev3')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Hit 10 reviews on your profile</div>
+          <div class="acc-meta"><span class="urgent-tag">Milestone</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Why This Is a Turning Point</div>
+        <div class="acc-detail-text">Details coming — how 10 reviews changes the way potential new clients perceive and trust you before they even call.</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">📱 Consistent Content</div>
+
+    <div class="acc-item" id="b-con1">
+      <div class="acc-header" onclick="toggleAcc('b-con1')">
+        <div class="acc-check" onclick="toggleDone(event,'b-con1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Post your work 3x per week consistently</div>
+          <div class="acc-meta"><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Content Ideas</div>
+        <div class="acc-detail-text">Details coming — content calendar ideas, what performs best by platform, and how to batch content so posting doesn't feel like a job.</div>
+        <div class="acc-detail-label">Action Steps</div>
+        <div class="acc-step">Details coming — posting schedule template and caption formulas.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="b-con2">
+      <div class="acc-header" onclick="toggleAcc('b-con2')">
+        <div class="acc-check" onclick="toggleDone(event,'b-con2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Start posting educational and behind-the-scenes content</div>
+          <div class="acc-meta"><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Content Ideas</div>
+        <div class="acc-detail-text">Details coming — tips, tutorials, myth-busters, and process videos that build trust and get saved and shared.</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">💬 Referral & Retention</div>
+
+    <div class="acc-item" id="b-ref1">
+      <div class="acc-header" onclick="toggleAcc('b-ref1')">
+        <div class="acc-check" onclick="toggleDone(event,'b-ref1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Launch a formal referral program with existing clients</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">What To Offer</div>
+        <div class="acc-detail-text">Details coming — referral offer ideas that motivate existing clients to actually send people your way.</div>
+        <div class="acc-detail-label">Action Steps</div>
+        <div class="acc-step">Details coming — how to communicate the program and how to track referrals easily.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="b-ref2">
+      <div class="acc-header" onclick="toggleAcc('b-ref2')">
+        <div class="acc-check" onclick="toggleDone(event,'b-ref2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Begin building your text and email contact list</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Why This Matters</div>
+        <div class="acc-detail-text">Details coming — why owning your contact list is the most valuable long-term asset you can build.</div>
+        <div class="acc-detail-label">Action Steps</div>
+        <div class="acc-step">Details coming — which platform to use and how to collect info naturally at checkout.</div>
+        <div class="acc-step">Details coming — what to send and how often to text or email.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="b-ref3">
+      <div class="acc-header" onclick="toggleAcc('b-ref3')">
+        <div class="acc-check" onclick="toggleDone(event,'b-ref3')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Promote multi-service discount packages</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Package Ideas</div>
+        <div class="acc-detail-text">Details coming — specific package combinations for nail, wax, and lash services and how to price them.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="b-ref4">
+      <div class="acc-header" onclick="toggleAcc('b-ref4')">
+        <div class="acc-check" onclick="toggleDone(event,'b-ref4')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Push gift cards for upcoming holidays and events</div>
+          <div class="acc-meta"><span class="acc-tag">Free to Promote</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">When and How To Promote</div>
+        <div class="acc-detail-text">Details coming — the seasonal calendar for gift card pushes and how to remind your network without being annoying.</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">✨ Influencer Groundwork</div>
+
+    <div class="acc-item" id="b-inf1">
+      <div class="acc-header" onclick="toggleAcc('b-inf1')">
+        <div class="acc-check" onclick="toggleDone(event,'b-inf1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Identify 3–5 local micro-influencers to reach out to</div>
+          <div class="acc-meta"><span class="acc-tag">Research</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">How To Find Them</div>
+        <div class="acc-detail-text">Details coming — where to look, what follower count to target, and how to evaluate whether their audience matches yours.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="b-inf2">
+      <div class="acc-header" onclick="toggleAcc('b-inf2')">
+        <div class="acc-check" onclick="toggleDone(event,'b-inf2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Send your first influencer outreach message</div>
+          <div class="acc-meta"><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">What To Say</div>
+        <div class="acc-detail-text">Details coming — exact outreach message template and what to offer in exchange for a post.</div>
+      </div></div>
+    </div>
+  </div>
+</div><!-- /phase 2 -->
+
+
+<!-- ════════════════════════════════ PHASE 3 ════════════════════════════════ -->
+<div class="phase-content" id="phase-3">
+  <div class="phase-hero">
+    <div class="phase-badge" style="color:var(--phase3)">✦ Phase 3</div>
+    <div class="phase-timeframe">Days 61 – 90</div>
+    <h2 class="phase-title">Expand Into the <em>Community.</em></h2>
+    <p class="phase-desc">Your book is starting to fill. Now get your name out in the real world — events, partnerships, press, and people who become clients because they saw you show up.</p>
+  </div>
+
+  <div class="callout blue">
+    <strong>🌍 Your Mindset This Phase</strong>
+    Show up in your community authentically. People remember the faces that show up consistently — not the ones who appear once and disappear.
+  </div>
+
+  <div class="phase-progress">
+    <div class="progress-label">PROGRESS</div>
+    <div class="progress-track"><div class="progress-fill" id="p3-fill" style="width:0%; background: linear-gradient(90deg,#4a6fa0,#8BAED4)"></div></div>
+    <div class="progress-count" style="color:var(--phase3)"><span id="p3-done">0</span>/<span id="p3-total">0</span></div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">🌟 Events & Festivals</div>
+
+    <div class="acc-item" id="c-evt1">
+      <div class="acc-header" onclick="toggleAcc('c-evt1')">
+        <div class="acc-check" onclick="toggleDone(event,'c-evt1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Attend local festivals and community events</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Which Events To Target</div>
+        <div class="acc-detail-text">Details coming — specific events in the Woodlands and Oak Ridge North area worth attending.</div>
+        <div class="acc-detail-label">Action Steps</div>
+        <div class="acc-step">Details coming — what to bring, how to introduce yourself, and how to follow up.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="c-evt2">
+      <div class="acc-header" onclick="toggleAcc('c-evt2')">
+        <div class="acc-check" onclick="toggleDone(event,'c-evt2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Set up a Cio Bela booth at a local event</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">What To Bring</div>
+        <div class="acc-detail-text">Details coming — booth setup ideas, what to offer on the spot, and how to collect leads.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="c-evt3">
+      <div class="acc-header" onclick="toggleAcc('c-evt3')">
+        <div class="acc-check" onclick="toggleDone(event,'c-evt3')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Attend a gala or formal event representing Cio Bela</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">How To Find Them</div>
+        <div class="acc-detail-text">Details coming — where to look for local galas and how to get tickets or sponsorships.</div>
+        <div class="acc-detail-label">Action Steps</div>
+        <div class="acc-step">Details coming — how to network intentionally and follow up with connections after the event.</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">🤝 Networking</div>
+
+    <div class="acc-item" id="c-net1">
+      <div class="acc-header" onclick="toggleAcc('c-net1')">
+        <div class="acc-check" onclick="toggleDone(event,'c-net1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Attend WGNO and The Woodlands Women's Collective events</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">How To Find Upcoming Events</div>
+        <div class="acc-detail-text">Details coming — links, schedules, and how to get on the invite lists for these specific groups.</div>
+        <div class="acc-detail-label">Action Steps</div>
+        <div class="acc-step">Details coming — what to bring, what to say, and how to show up so people remember you.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="c-net2">
+      <div class="acc-header" onclick="toggleAcc('c-net2')">
+        <div class="acc-check" onclick="toggleDone(event,'c-net2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Join a recurring local networking group</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Why Consistency Is Everything</div>
+        <div class="acc-detail-text">Details coming — why one visit means nothing and how showing up monthly builds the trust that turns into referrals.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="c-net3">
+      <div class="acc-header" onclick="toggleAcc('c-net3')">
+        <div class="acc-check" onclick="toggleDone(event,'c-net3')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Build cross-referral partnerships with local businesses</div>
+          <div class="acc-meta"><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Who To Target</div>
+        <div class="acc-detail-text">Details coming — gyms, med spas, bridal boutiques, photographers, dermatologists — and exactly how to approach each one.</div>
+        <div class="acc-detail-label">Action Steps</div>
+        <div class="acc-step">Details coming — what to bring when you walk in and how to structure a simple referral agreement.</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">💍 Bridal & Special Events</div>
+
+    <div class="acc-item" id="c-bri1">
+      <div class="acc-header" onclick="toggleAcc('c-bri1')">
+        <div class="acc-check" onclick="toggleDone(event,'c-bri1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Reach out to local wedding planners and bridal boutiques</div>
+          <div class="acc-meta"><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">How To Approach Them</div>
+        <div class="acc-detail-text">Details coming — what to bring, what to say, and how to make it easy for them to refer brides to Cio Bela.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="c-bri2">
+      <div class="acc-header" onclick="toggleAcc('c-bri2')">
+        <div class="acc-check" onclick="toggleDone(event,'c-bri2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Create a group package for bridal, quinceañera, and prom bookings</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Package Ideas</div>
+        <div class="acc-detail-text">Details coming — what to include, how to price group bookings, and how to promote them.</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">🤲 Cause Marketing & Press</div>
+
+    <div class="acc-item" id="c-cau1">
+      <div class="acc-header" onclick="toggleAcc('c-cau1')">
+        <div class="acc-check" onclick="toggleDone(event,'c-cau1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Participate in or sponsor a local charity event</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">How To Find the Right Cause</div>
+        <div class="acc-detail-text">Details coming — how to choose a cause that aligns with Cio Bela's brand and maximizes community visibility.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="c-pre1">
+      <div class="acc-header" onclick="toggleAcc('c-pre1')">
+        <div class="acc-check" onclick="toggleDone(event,'c-pre1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Pitch Cio Bela to local blogs, magazines, and media</div>
+          <div class="acc-meta"><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">How To Write a Pitch</div>
+        <div class="acc-detail-text">Details coming — pitch template, who to contact, and what story angle works best for local media.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="c-pho1">
+      <div class="acc-header" onclick="toggleAcc('c-pho1')">
+        <div class="acc-check" onclick="toggleDone(event,'c-pho1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Schedule a professional photography day</div>
+          <div class="acc-meta"><span class="acc-tag">Investment</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">What To Shoot</div>
+        <div class="acc-detail-text">Details coming — shot list ideas covering the artists, their work, the salon space, and branded content for every platform.</div>
+        <div class="acc-detail-label">Action Steps</div>
+        <div class="acc-step">Details coming — how to find a photographer and what a reasonable budget looks like.</div>
+      </div></div>
+    </div>
+  </div>
+</div><!-- /phase 3 -->
+
+
+<!-- ════════════════════════════════ PHASE 4 ════════════════════════════════ -->
+<div class="phase-content" id="phase-4">
+  <div class="phase-hero">
+    <div class="phase-badge" style="color:var(--phase4)">✦ Phase 4</div>
+    <div class="phase-timeframe">Day 90 & Beyond</div>
+    <h2 class="phase-title">Build the <em>Systems.</em><br>Protect What You Built.</h2>
+    <p class="phase-desc">You have a client base now. This phase puts the systems in place that keep them coming back, keep your books full without constant hustle, and position Cio Bela for long-term growth.</p>
+  </div>
+
+  <div class="callout purple">
+    <strong>♾ Your Mindset This Phase</strong>
+    Stop grinding for every booking. Start building systems that bring bookings to you automatically. Work smarter, not harder — you have earned it.
+  </div>
+
+  <div class="phase-progress">
+    <div class="progress-label">PROGRESS</div>
+    <div class="progress-track"><div class="progress-fill" id="p4-fill" style="width:0%; background: linear-gradient(90deg,#7a5aab,#B89AD4)"></div></div>
+    <div class="progress-count" style="color:var(--phase4)"><span id="p4-done">0</span>/<span id="p4-total">0</span></div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">🔄 Retention Systems</div>
+
+    <div class="acc-item" id="d-ret1">
+      <div class="acc-header" onclick="toggleAcc('d-ret1')">
+        <div class="acc-check" onclick="toggleDone(event,'d-ret1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Launch a loyalty and VIP membership program</div>
+          <div class="acc-meta"><span class="acc-tag">Revenue</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Program Structure</div>
+        <div class="acc-detail-text">Details coming — membership tier ideas, pricing, and what to include at each level.</div>
+        <div class="acc-detail-label">Action Steps</div>
+        <div class="acc-step">Details coming — how to launch it, how to enroll your existing clients, and how to promote it going forward.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="d-ret2">
+      <div class="acc-header" onclick="toggleAcc('d-ret2')">
+        <div class="acc-check" onclick="toggleDone(event,'d-ret2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Set up automated follow-up texts and emails</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">What To Automate</div>
+        <div class="acc-detail-text">Details coming — appointment reminders, follow-up messages, birthday texts, and reactivation sequences.</div>
+        <div class="acc-detail-label">Which Platform</div>
+        <div class="acc-detail-text">Details coming — tool recommendations that work with your existing booking system.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="d-ret3">
+      <div class="acc-header" onclick="toggleAcc('d-ret3')">
+        <div class="acc-check" onclick="toggleDone(event,'d-ret3')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Launch a reactivation campaign for lapsed clients</div>
+          <div class="acc-meta"><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">How To Reach Out</div>
+        <div class="acc-detail-text">Details coming — message templates that feel personal and genuinely bring people back.</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">📅 Seasonal & Calendar Marketing</div>
+
+    <div class="acc-item" id="d-cal1">
+      <div class="acc-header" onclick="toggleAcc('d-cal1')">
+        <div class="acc-check" onclick="toggleDone(event,'d-cal1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Build out a full-year marketing calendar</div>
+          <div class="acc-meta"><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Key Dates To Plan Around</div>
+        <div class="acc-detail-text">Details coming — a full 12-month calendar of promotional opportunities specific to nail, wax, and lash services.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="d-cal2">
+      <div class="acc-header" onclick="toggleAcc('d-cal2')">
+        <div class="acc-check" onclick="toggleDone(event,'d-cal2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Execute seasonal campaigns at least 3 weeks in advance</div>
+          <div class="acc-meta"><span class="acc-tag">Low Cost</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Campaign Templates</div>
+        <div class="acc-detail-text">Details coming — done-for-you promotion ideas for Valentine's Day, prom, summer, back to school, and the holidays.</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">📊 Platform Strategy Review</div>
+
+    <div class="acc-item" id="d-plt1">
+      <div class="acc-header" onclick="toggleAcc('d-plt1')">
+        <div class="acc-check" onclick="toggleDone(event,'d-plt1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Evaluate Groupon — convert, reduce, or exit</div>
+          <div class="acc-meta"><span class="acc-tag">Review</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">How To Measure It</div>
+        <div class="acc-detail-text">Details coming — what data to look at to determine if Groupon clients are converting to full-price regulars.</div>
+        <div class="acc-detail-label">Action Steps</div>
+        <div class="acc-step">Details coming — when and how to gracefully reduce or exit Groupon as your books fill organically.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="d-plt2">
+      <div class="acc-header" onclick="toggleAcc('d-plt2')">
+        <div class="acc-check" onclick="toggleDone(event,'d-plt2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Optimize your Fresha and Booksy profiles based on real data</div>
+          <div class="acc-meta"><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">What To Update</div>
+        <div class="acc-detail-text">Details coming — profile optimization checklist based on what is actually driving bookings vs what isn't.</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">🔍 Long-Term Visibility</div>
+
+    <div class="acc-item" id="d-seo1">
+      <div class="acc-header" onclick="toggleAcc('d-seo1')">
+        <div class="acc-check" onclick="toggleDone(event,'d-seo1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Address the SEO drop and restore local search rankings</div>
+          <div class="acc-meta"><span class="acc-tag">Investment</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">What Likely Happened</div>
+        <div class="acc-detail-text">Details coming — the most common reasons salon websites drop in local rankings and which one is most likely for Cio Bela.</div>
+        <div class="acc-detail-label">Recovery Plan</div>
+        <div class="acc-step">Details coming — step by step plan to diagnose the drop and start climbing back.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="d-seo2">
+      <div class="acc-header" onclick="toggleAcc('d-seo2')">
+        <div class="acc-check" onclick="toggleDone(event,'d-seo2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Optimize for AI search recommendations</div>
+          <div class="acc-meta"><span class="urgent-tag">New in 2026</span><span class="acc-tag">Free</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">Why This Matters Now</div>
+        <div class="acc-detail-text">Details coming — how ChatGPT, Perplexity, and Google AI are starting to surface local salon recommendations and how to make sure Cio Bela shows up.</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section-group">
+    <div class="section-label">🎮 The Glow Up Game</div>
+
+    <div class="acc-item" id="d-gam1">
+      <div class="acc-header" onclick="toggleAcc('d-gam1')">
+        <div class="acc-check" onclick="toggleDone(event,'d-gam1')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Launch Season 1 of The Glow Up Game with all six artists</div>
+          <div class="acc-meta"><span class="acc-tag">Internal</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">How To Kick It Off</div>
+        <div class="acc-detail-text">Details coming — how to launch it with energy, get everyone excited, and keep momentum high through the 90 days.</div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="d-gam2">
+      <div class="acc-header" onclick="toggleAcc('d-gam2')">
+        <div class="acc-check" onclick="toggleDone(event,'d-gam2')">✓</div>
+        <div class="acc-title-wrap">
+          <div class="acc-title">Season 1 champion celebration and Season 2 kickoff</div>
+          <div class="acc-meta"><span class="acc-tag">Internal</span></div>
+        </div>
+        <div class="acc-arrow">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-detail-label">How To Make It a Moment</div>
+        <div class="acc-detail-text">Details coming — how to celebrate the end of season in a way that makes everyone excited to play Season 2.</div>
+      </div></div>
+    </div>
+  </div>
+</div><!-- /phase 4 -->
+
+</main>
+
+<script>
+function toggleInner(id) {
+  const item = document.getElementById(id);
+  const body = item.querySelector('.inner-acc-body');
+  const inner = item.querySelector('.inner-acc-body-inner');
+  const isOpen = item.classList.contains('open');
+  if (isOpen) {
+    body.style.height = '0';
+    item.classList.remove('open');
+  } else {
+    body.style.height = inner.scrollHeight + 'px';
+    item.classList.add('open');
+  }
+  // Recalculate parent outer accordion height
+  const outerBody = item.closest('.acc-body');
+  const outerInner = item.closest('.acc-body-inner');
+  if (outerBody && outerInner) {
+    setTimeout(() => {
+      outerBody.style.height = outerInner.scrollHeight + 'px';
+    }, 30);
+  }
+}
+
+function showPhase(n) {
+  document.querySelectorAll('.phase-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.phase-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('phase-'+n).classList.add('active');
+  document.querySelector('.phase-tab[data-phase="'+n+'"]').classList.add('active');
+}
+
+function toggleAcc(id) {
+  const item = document.getElementById(id);
+  const body = item.querySelector('.acc-body');
+  const inner = item.querySelector('.acc-body-inner');
+  const isOpen = item.classList.contains('open');
+  if (isOpen) {
+    body.style.height = '0';
+    item.classList.remove('open');
+  } else {
+    body.style.height = inner.scrollHeight + 'px';
+    item.classList.add('open');
+  }
+}
+
+function toggleDone(e, id) {
+  e.stopPropagation();
+  const item = document.getElementById(id);
+  item.classList.toggle('done');
+  updateProgress();
+  saveState();
+}
+
+function updateProgress() {
+  [1,2,3,4].forEach(n => {
+    const phase = document.getElementById('phase-'+n);
+    const items = phase.querySelectorAll('.acc-item');
+    const done = phase.querySelectorAll('.acc-item.done');
+    const total = items.length;
+    const doneCount = done.length;
+    const pct = total > 0 ? (doneCount/total)*100 : 0;
+    const fill = document.getElementById('p'+n+'-fill');
+    const dEl = document.getElementById('p'+n+'-done');
+    const tEl = document.getElementById('p'+n+'-total');
+    if(fill) fill.style.width = pct+'%';
+    if(dEl) dEl.textContent = doneCount;
+    if(tEl) tEl.textContent = total;
+  });
+}
+
+function saveState() {
+  const state = {};
+  document.querySelectorAll('.acc-item').forEach((el,i) => { state[i] = el.classList.contains('done'); });
+  localStorage.setItem('ciobela_growth', JSON.stringify(state));
+}
+
+function loadState() {
+  const raw = localStorage.getItem('ciobela_growth');
+  if(!raw) return;
+  const state = JSON.parse(raw);
+  document.querySelectorAll('.acc-item').forEach((el,i) => { if(state[i]) el.classList.add('done'); });
+}
+
+loadState();
+updateProgress();
+</script>
+</body>
+</html>
