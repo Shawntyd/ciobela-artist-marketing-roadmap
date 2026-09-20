@@ -876,6 +876,33 @@
   .level-row-name { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold); min-width: 80px; }
   .level-row-pts { color: var(--text-muted); font-size: 12px; min-width: 90px; }
   .level-row-reward { color: var(--text-muted); font-size: 11px; }
+
+  .lb-catbar {
+    display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .lb-cat-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 0.05em;
+    background: var(--surface2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    cursor: pointer;
+  }
+  .lb-cat-btn.active { background: var(--gold); color: var(--bg); border-color: var(--gold); font-weight: 600; }
+  .lb-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .lb-row:last-child { border-bottom: none; }
+  .lb-rank { font-family: 'Cinzel', serif; font-size: 15px; color: var(--gold); width: 26px; flex-shrink: 0; }
+  .lb-emoji { font-size: 22px; width: 30px; text-align: center; flex-shrink: 0; }
+  .lb-name { flex: 1; font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--text); }
+  .lb-role { font-size: 10px; color: var(--text-muted); }
+  .lb-clicks { font-family: 'Cinzel', serif; font-size: 14px; color: var(--gold-light); flex-shrink: 0; }
+  .lb-empty { text-align: center; padding: 20px 0; color: var(--text-muted); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -885,7 +912,7 @@
   <div class="logo-area">
     <div class="logo-diamond">✦</div>
     <div class="salon-name">Cio Bela Salons</div>
-    <h1 class="game-title">The <span>Glow Up</span><br>Game</h1>
+    <h1 class="game-title">The Cio Bela<br><span>Glow Plan</span></h1>
     <p class="game-subtitle">90-Day Client Building Challenge</p>
   </div>
 
@@ -1039,6 +1066,9 @@
     <button class="bnav-btn" id="bnav-rules" onclick="showTab('rules')">
       <span class="bnav-icon">📋</span>Rules
     </button>
+    <button class="bnav-btn" id="bnav-leaderboard" onclick="showTab('leaderboard')">
+      <span class="bnav-icon">🏆</span>Leaderboard
+    </button>
   </div>
 
 </div>
@@ -1085,19 +1115,28 @@
   </div>
 </div>
 
+<!-- Leaderboard Modal -->
+<div class="modal-overlay" id="leaderboard-modal">
+  <div class="modal-card">
+    <div class="modal-title">🏆 LINK CLICK LEADERBOARD</div>
+    <div class="modal-rule" style="margin-bottom:16px;">Real clicks on your Facebook group links, live from the tracker — not honor system. Refreshes each time you open this tab.</div>
+    <div class="lb-catbar" id="lb-catbar"></div>
+    <div id="lb-content"><div class="modal-rule">Loading...</div></div>
+    <button class="modal-close" onclick="closeModal('leaderboard-modal')">Close</button>
+  </div>
+</div>
+
 <script>
 // ══════════════════════════════════════════
 // DATA
 // ══════════════════════════════════════════
 
 const ARTISTS = [
-  { id: 'owner', name: 'Owner', emoji: '👑', role: 'Lash Artist · 13 yrs' },
-  { id: 'wax1', name: 'Wax Artist 1', emoji: '🌸', role: 'Waxing' },
-  { id: 'wax2', name: 'Wax Artist 2', emoji: '🌺', role: 'Waxing' },
-  { id: 'wax3', name: 'Wax Artist 3', emoji: '🌼', role: 'Waxing' },
-  { id: 'nail1', name: 'Nail Artist 1', emoji: '💅', role: 'Nails' },
-  { id: 'nail2', name: 'Nail Artist 2', emoji: '✨', role: 'Nails' },
-  { id: 'nail3', name: 'Nail Artist 3', emoji: '💫', role: 'Nails' },
+  { id: 'shawntavia', name: 'Shawntavia', emoji: '👑', role: 'Lash Artist · Owner', specialty: 'lash' },
+  { id: 'londyn', name: 'Londyn', emoji: '👁️', role: 'Lash Artist', specialty: 'lash' },
+  { id: 'savannah', name: 'Savannah', emoji: '💅', role: 'Nail Artist', specialty: 'nails' },
+  { id: 'mia', name: 'Mia', emoji: '🌸', role: 'Waxing Specialist', specialty: 'waxing' },
+  { id: 'zoe', name: 'Zoey', emoji: '🌺', role: 'Waxing Specialist', specialty: 'waxing' },
 ];
 
 const LEVELS = [
@@ -1687,7 +1726,90 @@ function showTab(tab) {
     document.getElementById('levels-modal').classList.add('show');
   } else if (tab === 'rules') {
     document.getElementById('rules-modal').classList.add('show');
+  } else if (tab === 'leaderboard') {
+    document.getElementById('leaderboard-modal').classList.add('show');
+    loadLeaderboard();
   }
+}
+
+// ══════════════════════════════════════════
+// LEADERBOARD — real click data, no honor system
+// ══════════════════════════════════════════
+
+const LB_LOG_URL = 'https://raw.githubusercontent.com/Shawntyd/cio-bela-20-off-promo/main/visits.log';
+let lbCategory = 'all';
+let lbCounts = null;
+
+async function loadLeaderboard(){
+  const content = document.getElementById('lb-content');
+  content.innerHTML = '<div class="modal-rule">Loading live click data...</div>';
+  try {
+    const resp = await fetch(LB_LOG_URL + '?t=' + Date.now(), {cache:'no-store'});
+    if (!resp.ok) throw new Error('status ' + resp.status);
+    const text = await resp.text();
+    const lines = text.split('\n').filter(l => l.trim().length > 0);
+    const counts = {};
+    ARTISTS.forEach(a => counts[a.id] = 0);
+    lines.forEach(l => {
+      let e;
+      try { e = JSON.parse(l); } catch(err) { return; }
+      if (e.utm_source !== 'facebook_groups') return;
+      if ((e.event || 'view') !== 'view') return;
+      const who = e.utm_content;
+      if (who && counts.hasOwnProperty(who)) counts[who]++;
+    });
+    lbCounts = counts;
+    buildLbCatbar();
+    renderLeaderboard();
+  } catch(err){
+    content.innerHTML = '<div class="lb-empty">Couldn\'t load live data right now. Try reopening this tab in a moment.</div>';
+  }
+}
+
+function buildLbCatbar(){
+  const bar = document.getElementById('lb-catbar');
+  const cats = [
+    {key:'all', label:'All'},
+    {key:'lash', label:'Lash'},
+    {key:'nails', label:'Nails'},
+    {key:'waxing', label:'Waxing'}
+  ];
+  bar.innerHTML = '';
+  cats.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'lb-cat-btn' + (c.key === lbCategory ? ' active' : '');
+    btn.textContent = c.label;
+    btn.onclick = () => { lbCategory = c.key; buildLbCatbar(); renderLeaderboard(); };
+    bar.appendChild(btn);
+  });
+}
+
+function renderLeaderboard(){
+  const content = document.getElementById('lb-content');
+  if (!lbCounts){ content.innerHTML = '<div class="lb-empty">No data yet.</div>'; return; }
+
+  let ranked = ARTISTS
+    .filter(a => lbCategory === 'all' || a.specialty === lbCategory)
+    .map(a => ({...a, clicks: lbCounts[a.id] || 0}))
+    .sort((a,b) => b.clicks - a.clicks);
+
+  if (ranked.length === 0 || ranked.every(a => a.clicks === 0)){
+    content.innerHTML = '<div class="lb-empty">No link clicks logged yet in this category. Get posting!</div>';
+    return;
+  }
+
+  const medals = ['🥇','🥈','🥉'];
+  let html = '';
+  ranked.forEach((a, i) => {
+    const rank = medals[i] || (i+1);
+    html += '<div class="lb-row">';
+    html += '<div class="lb-rank">' + rank + '</div>';
+    html += '<div class="lb-emoji">' + a.emoji + '</div>';
+    html += '<div><div class="lb-name">' + a.name + '</div><div class="lb-role">' + a.role + '</div></div>';
+    html += '<div class="lb-clicks">' + a.clicks + ' click' + (a.clicks===1?'':'s') + '</div>';
+    html += '</div>';
+  });
+  content.innerHTML = html;
 }
 
 function closeModal(id) {
