@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cio Bela Glow Plan — Cio Bela Salons</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Cinzel:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A85C;
+    --gold-light: #E8CF8A;
+    --gold-dark: #8B6F35;
+    --diamond: #A8D8EA;
+    --bg: #0A0806;
+    --bg2: #100D09;
+    --bg3: #1A1510;
+    --surface: #1E1810;
+    --surface2: #252015;
+    --border: rgba(201,168,92,0.2);
+    --border-bright: rgba(201,168,92,0.5);
+    --text: #F0E8D8;
+    --text-muted: #8A7A60;
+    --bronze: #CD7F32;
+    --silver: #C0C0C0;
+    --platinum: #B8A0C8;
+    --raw: #6B6B6B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(201,168,92,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(168,216,234,0.03) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; position: relative; z-index: 1; }
+  .screen.active { display: block; }
+
+  /* ── LOGIN SCREEN ── */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .logo-area {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .logo-diamond {
+    font-size: 48px;
+    margin-bottom: 16px;
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(201,168,92,0.4)); }
+    50% { filter: drop-shadow(0 0 24px rgba(201,168,92,0.8)); }
+  }
+
+  .salon-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .game-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 8vw, 72px);
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .game-title span {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .game-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+
+  .login-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(201,168,92,0.1);
+  }
+
+  .login-label {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .artist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .artist-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .artist-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,92,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .artist-btn:hover { border-color: var(--border-bright); color: var(--text); }
+  .artist-btn:hover::before { opacity: 1; }
+  .artist-btn.selected { border-color: var(--gold); color: var(--gold); background: rgba(201,168,92,0.08); }
+  .artist-btn.selected::before { opacity: 1; }
+
+  .artist-emoji { font-size: 20px; display: block; margin-bottom: 6px; }
+  .artist-role { font-size: 10px; color: var(--text-muted); margin-top: 2px; letter-spacing: 0.05em; }
+
+  .pin-section { margin-bottom: 24px; }
+
+  .pin-input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px;
+    color: var(--text);
+    letter-spacing: 0.3em;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .pin-input:focus { border-color: var(--gold); }
+  .pin-input::placeholder { letter-spacing: 0.1em; font-size: 13px; color: var(--text-muted); }
+
+  .pin-hint { font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 8px; }
+
+  .btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    border: none;
+    border-radius: 12px;
+    padding: 18px;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    color: var(--bg);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(201,168,92,0.3);
+  }
+
+  .btn-primary:active { transform: translateY(0); }
+
+  .error-msg {
+    color: #E87070;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 12px;
+    min-height: 16px;
+  }
+
+  /* ── DASHBOARD ── */
+  #dashboard-screen { min-height: 100vh; }
+
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,8,6,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .top-bar-left { display: flex; align-items: center; gap: 12px; }
+
+  .top-artist-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  .top-artist-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .top-level-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid currentColor;
+  }
+
+  .top-bar-right { display: flex; align-items: center; gap: 16px; }
+
+  .top-points {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  .top-points-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.1em; }
+
+  .logout-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: var(--text-muted);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.05em;
+  }
+
+  .logout-btn:hover { border-color: var(--border-bright); color: var(--text); }
+
+  /* Hero section */
+  .hero {
+    padding: 40px 24px 0;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Level card */
+  .level-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .level-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,92,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .level-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .current-level-display { display: flex; align-items: center; gap: 14px; }
+
+  .level-gem { font-size: 36px; animation: float 4s ease-in-out infinite; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .level-info-text {}
+  .level-name {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+  .level-pts-range { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .pts-to-next {
+    text-align: right;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .pts-to-next-num { font-size: 32px; font-weight: 600; color: var(--gold); }
+  .pts-to-next-label { font-size: 11px; color: var(--text-muted); display: block; }
+
+  .progress-track {
+    background: var(--bg3);
+    border-radius: 100px;
+    height: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 20px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+    border-radius: 100px;
+  }
+
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  /* Season & team stats */
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .stat-icon { font-size: 24px; margin-bottom: 8px; }
+  .stat-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; letter-spacing: 0.05em; }
+
+  /* Category pills nav */
+  .cat-nav {
+    display: flex;
+    gap: 8px;
+    padding: 0 24px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cat-nav::-webkit-scrollbar { display: none; }
+
+  .cat-pill {
+    flex-shrink: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 10px 18px;
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .cat-pill:hover { border-color: var(--border-bright); color: var(--text); }
+  .cat-pill.active { background: rgba(201,168,92,0.12); border-color: var(--gold); color: var(--gold); }
+
+  /* Actions area */
+  .actions-area {
+    padding: 0 24px 100px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .category-section { display: none; }
+  .category-section.active { display: block; }
+
+  .cat-header {
+    margin-bottom: 20px;
+  }
+
+  .cat-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .cat-title span { color: var(--gold); font-style: italic; }
+
+  .cat-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; max-width: 600px; }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin: 28px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Action cards */
+  .action-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .action-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: 3px 0 0 3px;
+  }
+
+  .action-card:hover { border-color: var(--border-bright); }
+  .action-card.completed { background: rgba(201,168,92,0.06); border-color: rgba(201,168,92,0.3); }
+  .action-card.completed::before { opacity: 1; }
+
+  .action-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .action-check {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--border-bright);
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+    font-size: 12px;
+    color: transparent;
+  }
+
+  .action-card.completed .action-check {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--bg);
+  }
+
+  .action-check:hover { border-color: var(--gold); transform: scale(1.1); }
+
+  .action-content { flex: 1; }
+
+  .action-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .action-card.completed .action-name { color: var(--gold); }
+
+  .unlimited-badge {
+    font-size: 9px;
+    background: rgba(201,168,92,0.15);
+    color: var(--gold);
+    border-radius: 4px;
+    padding: 2px 6px;
+    letter-spacing: 0.05em;
+    font-weight: 400;
+  }
+
+  .action-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; }
+
+  .action-steps {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .action-card.expanded .action-steps { display: block; }
+
+  .action-step {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .action-step::before {
+    content: '→';
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0px;
+  }
+
+  .action-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+
+  .pts-badge {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  .pts-badge span { font-size: 11px; font-family: 'DM Sans', sans-serif; color: var(--text-muted); font-weight: 400; }
+
+  .expand-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 11px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .expand-btn:hover { border-color: var(--border-bright); color: var(--text); }
+  .action-card.expanded .expand-btn { border-color: var(--gold); color: var(--gold); }
+
+  /* Points popup animation */
+  .pts-popup {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(201,168,92,0.6);
+    animation: pts-float 1.5s ease-out forwards;
+  }
+
+  @keyframes pts-float {
+    0% { opacity: 1; transform: translateY(0) scale(0.8); }
+    50% { opacity: 1; transform: translateY(-40px) scale(1.1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(0.9); }
+  }
+
+  /* Level up overlay */
+  .levelup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
+    display: none;
+  }
+
+  .levelup-overlay.show { display: flex; }
+
+  .levelup-card {
+    text-align: center;
+    padding: 60px 40px;
+    animation: levelup-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes levelup-in {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .levelup-gem { font-size: 80px; margin-bottom: 20px; animation: pulse-glow 2s ease-in-out infinite; }
+
+  .levelup-title {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .levelup-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .levelup-reward {
+    font-size: 14px;
+    color: var(--text-muted);
+    max-width: 300px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
+
+  .levelup-close {
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    border: none;
+    border-radius: 12px;
+    padding: 16px 40px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--bg);
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  /* Confetti */
+  .confetti-piece {
+    position: fixed;
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 300;
+    animation: confetti-fall linear forwards;
+  }
+
+  @keyframes confetti-fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Season info bar */
+  .season-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .season-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+  }
+
+  .season-detail { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .team-total {
+    text-align: right;
+  }
+
+  .team-pts {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--gold-light);
+  }
+
+  .team-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.05em; }
+
+  /* Mobile bottom nav */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(10,8,6,0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    padding: 12px 20px 20px;
+    display: flex;
+    justify-content: space-around;
+    z-index: 50;
+  }
+
+  .bnav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    font-family: 'DM Sans', sans-serif;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .bnav-btn:hover, .bnav-btn.active { color: var(--gold); }
+  .bnav-icon { font-size: 20px; }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .login-card { padding: 28px 20px; }
+    .artist-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .top-bar { padding: 12px 16px; }
+    .hero, .actions-area { padding-left: 16px; padding-right: 16px; }
+    .cat-nav { padding-left: 16px; padding-right: 16px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .hidden { display: none !important; }
+
+  /* Rules modal */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 36px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal-title {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .modal-rule {
+    display: flex; gap: 10px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .modal-rule::before { content: '✦'; color: var(--gold); flex-shrink: 0; }
+  .modal-close {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--bg);
+    cursor: pointer;
+    margin-top: 20px;
+    text-transform: uppercase;
+  }
+
+  .level-list { margin: 12px 0; }
+  .level-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .level-row:last-child { border-bottom: none; }
+  .level-row-gem { font-size: 20px; width: 28px; text-align: center; }
+  .level-row-name { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold); min-width: 80px; }
+  .level-row-pts { color: var(--text-muted); font-size: 12px; min-width: 90px; }
+  .level-row-reward { color: var(--text-muted); font-size: 11px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ LOGIN SCREEN ══════════════════════ -->
+<div id="login-screen" class="screen active">
+  <div class="logo-area">
+    <div class="logo-diamond">✦</div>
+    <div class="salon-name">Cio Bela Salons</div>
+    <h1 class="game-title">The <span>Glow Up</span><br>Game</h1>
+    <p class="game-subtitle">90-Day Client Building Challenge</p>
+  </div>
+
+  <div class="login-card">
+    <span class="login-label">Select Your Profile</span>
+    <div class="artist-grid" id="artist-grid"></div>
+
+    <div class="pin-section">
+      <input type="password" class="pin-input" id="pin-input" maxlength="4" placeholder="Enter your 4-digit PIN" inputmode="numeric">
+      <p class="pin-hint">First time? Your PIN will be saved automatically.</p>
+    </div>
+
+    <button class="btn-primary" onclick="handleLogin()">✦ &nbsp; Enter the Game</button>
+    <p class="error-msg" id="login-error"></p>
+  </div>
+</div>
+
+<!-- ══════════════════════ DASHBOARD ══════════════════════ -->
+<div id="dashboard-screen" class="screen">
+
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <div class="top-artist-avatar" id="top-avatar"></div>
+      <div>
+        <div class="top-artist-name" id="top-name"></div>
+        <div class="top-level-badge" id="top-level-badge"></div>
+      </div>
+    </div>
+    <div class="top-bar-right">
+      <div style="text-align:right">
+        <div class="top-points" id="top-points">0</div>
+        <div class="top-points-label">PTS THIS SEASON</div>
+      </div>
+      <button class="logout-btn" onclick="logout()">Log Out</button>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+
+    <!-- Season bar -->
+    <div class="season-bar">
+      <div>
+        <div class="season-title">✦ SEASON 1 — THE LAUNCH</div>
+        <div class="season-detail">90-day challenge · Points reset each season</div>
+      </div>
+      <div class="team-total">
+        <div class="team-pts" id="team-total-pts">0</div>
+        <div class="team-label">TEAM TOTAL PTS</div>
+      </div>
+    </div>
+
+    <!-- Level card -->
+    <div class="level-card">
+      <div class="level-header">
+        <div class="current-level-display">
+          <div class="level-gem" id="level-gem">🪨</div>
+          <div class="level-info-text">
+            <div class="level-name" id="level-name">RAW STONE</div>
+            <div class="level-pts-range" id="level-range">0 – 199 pts</div>
+          </div>
+        </div>
+        <div class="pts-to-next">
+          <div class="pts-to-next-num" id="pts-to-next">200</div>
+          <span class="pts-to-next-label">PTS TO NEXT LEVEL</span>
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="progress-labels">
+        <span id="prog-label-start">0</span>
+        <span id="prog-label-next"></span>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value" id="stat-completed">0</div>
+        <div class="stat-label">ACTIONS COMPLETED</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🏷️</div>
+        <div class="stat-value" id="stat-cats">0/4</div>
+        <div class="stat-label">CATEGORIES ACTIVE</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Category nav -->
+  <div class="cat-nav">
+    <div class="cat-pill active" onclick="showCat('network', this)">💬 Your Network</div>
+    <div class="cat-pill" onclick="showCat('salon', this)">💅 In the Salon</div>
+    <div class="cat-pill" onclick="showCat('online', this)">📱 Online</div>
+    <div class="cat-pill" onclick="showCat('community', this)">🌟 Community</div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions-area">
+
+    <!-- NETWORK -->
+    <div class="category-section active" id="cat-network">
+      <div class="cat-header">
+        <div class="cat-title">Your Own <span>Network</span></div>
+        <div class="cat-desc">Your fastest path to your first clients is already in your phone. These people want you to win — let them help you.</div>
+      </div>
+      <div id="actions-network"></div>
+    </div>
+
+    <!-- SALON -->
+    <div class="category-section" id="cat-salon">
+      <div class="cat-header">
+        <div class="cat-title">In the <span>Salon</span></div>
+        <div class="cat-desc">Everything you need to fill your book is already inside these walls. Use every resource, every relationship, and every client who walks through that door.</div>
+      </div>
+      <div id="actions-salon"></div>
+    </div>
+
+    <!-- ONLINE -->
+    <div class="category-section" id="cat-online">
+      <div class="cat-header">
+        <div class="cat-title">Online <span>Presence</span></div>
+        <div class="cat-desc">Your online presence is open 24/7. Build it intentionally and it works for you even when you're not.</div>
+      </div>
+      <div id="actions-online"></div>
+    </div>
+
+    <!-- COMMUNITY -->
+    <div class="category-section" id="cat-community">
+      <div class="cat-header">
+        <div class="cat-title">In the <span>Community</span></div>
+        <div class="cat-desc">People do business with people they know. Get your face and your name out there — your next best client is already in your city.</div>
+      </div>
+      <div id="actions-community"></div>
+    </div>
+
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="bottom-nav">
+    <button class="bnav-btn active" id="bnav-game" onclick="showTab('game')">
+      <span class="bnav-icon">🎮</span>Game
+    </button>
+    <button class="bnav-btn" id="bnav-levels" onclick="showTab('levels')">
+      <span class="bnav-icon">💎</span>Levels
+    </button>
+    <button class="bnav-btn" id="bnav-rules" onclick="showTab('rules')">
+      <span class="bnav-icon">📋</span>Rules
+    </button>
+  </div>
+
+</div>
+
+<!-- Level Up Overlay -->
+<div class="levelup-overlay" id="levelup-overlay">
+  <div class="levelup-card">
+    <div class="levelup-gem" id="lu-gem">💎</div>
+    <div class="levelup-title">YOU LEVELED UP</div>
+    <div class="levelup-name" id="lu-name">GOLD</div>
+    <div class="levelup-reward" id="lu-reward">You earned something special. See your salon owner to claim your reward.</div>
+    <button class="levelup-close" onclick="closeLevelUp()">✦ &nbsp; Keep Going</button>
+  </div>
+</div>
+
+<!-- Levels Modal -->
+<div class="modal-overlay" id="levels-modal">
+  <div class="modal-card">
+    <div class="modal-title">✦ THE LEVELS & REWARDS</div>
+    <div class="level-list">
+      <div class="level-row"><span class="level-row-gem">🪨</span><span class="level-row-name">RAW STONE</span><span class="level-row-pts">0–199 pts</span><span class="level-row-reward">You're just getting started.</span></div>
+      <div class="level-row"><span class="level-row-gem">🥉</span><span class="level-row-name">BRONZE</span><span class="level-row-pts">200–499 pts</span><span class="level-row-reward">Cio Bela branded tumbler or tote.</span></div>
+      <div class="level-row"><span class="level-row-gem">🥈</span><span class="level-row-name">SILVER</span><span class="level-row-pts">500–899 pts</span><span class="level-row-reward">Full product bundle from the salon.</span></div>
+      <div class="level-row"><span class="level-row-gem">🥇</span><span class="level-row-name">GOLD</span><span class="level-row-pts">900–1,399 pts</span><span class="level-row-reward">Spa or self-care experience on us.</span></div>
+      <div class="level-row"><span class="level-row-gem">💎</span><span class="level-row-name">PLATINUM</span><span class="level-row-pts">1,400–1,999 pts</span><span class="level-row-reward">Cash bonus or education of your choice.</span></div>
+      <div class="level-row"><span class="level-row-gem">✦</span><span class="level-row-name">DIAMOND</span><span class="level-row-pts">2,000+ pts</span><span class="level-row-reward">Significant cash reward + Wall of Fame.</span></div>
+      <div class="level-row"><span class="level-row-gem">👑</span><span class="level-row-name">CHAMPION</span><span class="level-row-pts">Top score</span><span class="level-row-reward">Diamond reward + bonus surprise prize.</span></div>
+    </div>
+    <button class="modal-close" onclick="closeModal('levels-modal')">Got It</button>
+  </div>
+</div>
+
+<!-- Rules Modal -->
+<div class="modal-overlay" id="rules-modal">
+  <div class="modal-card">
+    <div class="modal-title">✦ HOW THE GAME WORKS</div>
+    <div class="modal-rule">Every 90 days is a new Season. Points reset each season — fresh start, new chance to climb.</div>
+    <div class="modal-rule">Earn points by completing actions across all four categories. You must score in ALL FOUR to advance past Bronze.</div>
+    <div class="modal-rule">Actions marked <strong style="color:var(--gold)">UNLIMITED</strong> can be scored every time you do them. All other actions are one-time per season.</div>
+    <div class="modal-rule">Everyone who reaches Diamond earns their personal reward. The artist with the highest total is crowned Season Champion and gets a bonus prize on top.</div>
+    <div class="modal-rule">You track your own progress here. Honesty is everything — this game only works if you play it with integrity.</div>
+    <div class="modal-rule">Bonus point opportunities will be announced by the salon throughout the season. Stay tuned.</div>
+    <button class="modal-close" onclick="closeModal('rules-modal')">Let's Play</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+
+const ARTISTS = [
+  { id: 'owner', name: 'Owner', emoji: '👑', role: 'Lash Artist · 13 yrs' },
+  { id: 'wax1', name: 'Wax Artist 1', emoji: '🌸', role: 'Waxing' },
+  { id: 'wax2', name: 'Wax Artist 2', emoji: '🌺', role: 'Waxing' },
+  { id: 'wax3', name: 'Wax Artist 3', emoji: '🌼', role: 'Waxing' },
+  { id: 'nail1', name: 'Nail Artist 1', emoji: '💅', role: 'Nails' },
+  { id: 'nail2', name: 'Nail Artist 2', emoji: '✨', role: 'Nails' },
+  { id: 'nail3', name: 'Nail Artist 3', emoji: '💫', role: 'Nails' },
+];
+
+const LEVELS = [
+  { name: 'RAW STONE', gem: '🪨', min: 0, max: 199, reward: "You're uncut — full of potential. Time to shine." },
+  { name: 'BRONZE', gem: '🥉', min: 200, max: 499, reward: 'A Cio Bela branded tumbler or tote — something you\'ll use every single day.' },
+  { name: 'SILVER', gem: '🥈', min: 500, max: 899, reward: 'A full product bundle from the salon — tools and products for your craft.' },
+  { name: 'GOLD', gem: '🥇', min: 900, max: 1399, reward: 'A spa or self-care experience — a massage, facial, or luxury treatment on us.' },
+  { name: 'PLATINUM', gem: '💎', min: 1400, max: 1999, reward: 'A cash bonus or paid education — a class, certification, or course of your choice.' },
+  { name: 'DIAMOND', gem: '✦', min: 2000, max: Infinity, reward: 'A significant cash reward + your name on the Cio Bela Diamond Wall of Fame. You did it.' },
+];
+
+const ACTIONS = {
+  network: [
+    {
+      id: 'net1', section: '🔥 Start Here — Referral Program',
+      name: 'Launch your personal referral program', pts: 25, unlimited: false,
+      desc: 'Tell every friend, family member, and current client: refer someone and you both get a discount. Make it official.',
+      steps: ['Write out your referral offer and text it to at least 10 people this week.', 'Post your referral offer on your personal social media page.', 'Follow up with anyone who said they would refer — remind them gently.']
+    },
+    {
+      id: 'net2', section: '🔥 Start Here — Referral Program',
+      name: 'Get your first referral booking', pts: 50, unlimited: false,
+      desc: 'Someone sends you a brand new client from their personal recommendation.',
+      steps: ['Thank your referral source personally — a text, a card, or a small surprise goes a long way.', 'Deliver an exceptional experience so that new client becomes a referral source too.']
+    },
+    {
+      id: 'net3', section: '🔥 Start Here — Referral Program',
+      name: 'Build a referral chain', pts: 75, unlimited: false,
+      desc: 'A client you got from a referral refers someone else to you.',
+      steps: ['Track where every new client comes from so you know which referral sources are working.', 'Reward your best referrers with something extra — loyalty builds loyalty.']
+    },
+    {
+      id: 'net4', section: '🎁 Gift Cards & Gifting',
+      name: 'Sell your first gift card through your network', pts: 30, unlimited: false,
+      desc: 'Someone in your personal circle purchases a gift card for a friend or family member.',
+      steps: ['Remind your network gift cards are available before every major holiday.', 'Make it easy — know exactly how someone can purchase one and tell them.']
+    },
+    {
+      id: 'net5', section: '🎁 Gift Cards & Gifting',
+      name: 'Convert a gift card recipient into a regular client', pts: 50, unlimited: false,
+      desc: 'Someone who received a gift card books again on their own.',
+      steps: ['Make their first experience so exceptional they have no reason to go anywhere else.', 'Rebook them before they leave.']
+    },
+    {
+      id: 'net6', section: '⭐ Wow Moments',
+      name: 'Deliver a wow moment', pts: 20, unlimited: true,
+      desc: 'Go above and beyond in a way the client did not expect — and they mention it, post it, or send someone new.',
+      steps: ['Think about one small thing you can do each appointment that makes it feel special.', 'Ask yourself after every appointment: would this person tell a friend about their experience today?']
+    },
+    {
+      id: 'net7', section: '⭐ Wow Moments',
+      name: 'Receive an unprompted compliment or referral', pts: 40, unlimited: true,
+      desc: 'A client tells someone about you without being asked.',
+      steps: ['Screenshot it if it happens online. These are gold for your portfolio and your confidence.']
+    },
+    {
+      id: 'net8', section: '🏆 Personal Milestones',
+      name: 'Hit your first 10 bookings', pts: 100, unlimited: false,
+      desc: 'Ten real client appointments completed.',
+      steps: ['Track every booking from day one.', 'Celebrate this — it is your first real milestone.']
+    },
+    {
+      id: 'net9', section: '🏆 Personal Milestones',
+      name: 'Hit your first fully booked week', pts: 150, unlimited: false,
+      desc: 'Every working day has at least one client on the books.',
+      steps: ['Post about it. Let people see you are in demand.']
+    },
+    {
+      id: 'net10', section: '🏆 Personal Milestones',
+      name: 'Get your first 5-star review', pts: 75, unlimited: false,
+      desc: 'A real client leaves you a glowing review on Google or Facebook.',
+      steps: ['Ask every happy client directly: "Would you mind leaving me a quick review? It means everything when you\'re building your book."']
+    },
+  ],
+  salon: [
+    {
+      id: 'sal1', section: '🔥 Start Here — Work the Room',
+      name: 'Get a personal intro from a hairstylist to their client', pts: 30, unlimited: false,
+      desc: 'A stylist introduces you by name to a client sitting in their chair.',
+      steps: ['Introduce yourself to all three hairstylists and show them your portfolio this week.', 'Ask them to mention you naturally when clients are already talking about beauty services.', 'Give each stylist a few of your business or discount cards to keep at their station.']
+    },
+    {
+      id: 'sal2', section: '🔥 Start Here — Work the Room',
+      name: 'Convert a salon client into your client', pts: 50, unlimited: true,
+      desc: 'Someone who originally came in for hair books with you for the first time.',
+      steps: ['Be present, be visible, and be warm with every person who walks into the salon.', 'Let your work on the digital display do the selling for you.']
+    },
+    {
+      id: 'sal3', section: '🔥 Start Here — Work the Room',
+      name: 'Get a hairstylist referral booking', pts: 40, unlimited: true,
+      desc: 'A client books with you specifically because a stylist recommended you.',
+      steps: ['Thank the stylist every single time this happens. Make referring you feel rewarding for them too.']
+    },
+    {
+      id: 'sal4', section: '📲 Digital Display & Portfolio',
+      name: 'Load your content onto the digital display', pts: 20, unlimited: false,
+      desc: 'Submit your best before and after photos to be featured on the salon display.',
+      steps: ['Choose your top 5 photos and submit them this week.', 'Update your display content at least once per season with fresh work.']
+    },
+    {
+      id: 'sal5', section: '📲 Digital Display & Portfolio',
+      name: 'Create a physical portfolio for your station', pts: 25, unlimited: false,
+      desc: 'A clean, professional lookbook or tablet portfolio visible to anyone sitting near you.',
+      steps: ['Organize your best work into a simple album or digital slideshow.', 'Keep it current — swap out photos as your skills grow.']
+    },
+    {
+      id: 'sal6', section: '💰 Packages & Incentives',
+      name: 'Book a multi-service package', pts: 35, unlimited: true,
+      desc: 'A client books two or more services in a single visit using a bundled offer.',
+      steps: ['Know your package options by heart so you can mention them naturally in conversation.', 'Suggest a complementary service at every appointment — "Have you tried our nail artist yet?"']
+    },
+    {
+      id: 'sal7', section: '💰 Packages & Incentives',
+      name: 'Hand out a discount card that results in a booking', pts: 40, unlimited: true,
+      desc: 'You personally hand a discount card to a salon client and they book with you.',
+      steps: ['Keep cards at your station at all times.', 'Be warm and personal when you hand one out — it is an invitation, not a flyer.']
+    },
+    {
+      id: 'sal8', section: '🔄 Retention & Rebooking',
+      name: 'Rebook a client before they leave', pts: 15, unlimited: true,
+      desc: 'You schedule their next appointment at checkout.',
+      steps: ['Make it a habit for every single appointment, no exceptions.', 'Say: "Let\'s go ahead and get you on the books now — my schedule fills up fast."']
+    },
+    {
+      id: 'sal9', section: '🔄 Retention & Rebooking',
+      name: 'Reactivate a lapsed client', pts: 50, unlimited: true,
+      desc: 'Someone who has not been in for 60+ days books again after you reach out.',
+      steps: ['Send a personal text or DM — not a mass message. Make it feel like you genuinely missed them.', 'Offer a small incentive to make it easy for them to say yes.']
+    },
+    {
+      id: 'sal10', section: '🔄 Retention & Rebooking',
+      name: 'Enroll a client in a loyalty or membership program', pts: 60, unlimited: true,
+      desc: 'A client signs up for recurring services on a membership model.',
+      steps: ['Know the membership options and mention them to clients who book regularly.', 'Frame it as a VIP benefit, not a sales pitch.']
+    },
+    {
+      id: 'sal11', section: '📅 Seasonal Campaigns',
+      name: 'Run a seasonal promotion', pts: 30, unlimited: false,
+      desc: 'You create and execute a promotion tied to an upcoming holiday or season.',
+      steps: ['Plan your promotions at the start of each season.', 'Announce your seasonal offers at least 3 weeks before the date.']
+    },
+    {
+      id: 'sal12', section: '📅 Seasonal Campaigns',
+      name: 'Fill your book for a peak season', pts: 75, unlimited: false,
+      desc: "Valentine's Day, prom, summer, or holiday rush — you are booked out.",
+      steps: ['Start promoting peak season availability early — clients who plan ahead are your best clients.']
+    },
+  ],
+  online: [
+    {
+      id: 'onl1', section: '🔥 Start Here — Show Up Consistently',
+      name: 'Post your work 3x per week for a full month', pts: 50, unlimited: true,
+      desc: 'Consistent content of your actual work — before and afters, in-progress shots, finished looks.',
+      steps: ['Set a posting schedule and stick to it like it is a client appointment.', 'Use natural lighting and a clean background — quality matters.', 'Always write a caption that tells people what the service is and how to book you.']
+    },
+    {
+      id: 'onl2', section: '🔥 Start Here — Show Up Consistently',
+      name: 'Go viral or reach a new audience milestone', pts: 75, unlimited: false,
+      desc: 'A post reaches significantly more people than usual through shares, saves, or algorithm pickup.',
+      steps: ['Pay attention to which content performs best and make more of it.', 'Trending audio and relatable content travel further than polished ads.']
+    },
+    {
+      id: 'onl3', section: '⭐ Reputation & Reviews',
+      name: 'Get a 5-star Google review', pts: 25, unlimited: true,
+      desc: 'A real client leaves a positive review on your Google or Facebook profile.',
+      steps: ['Ask every happy client directly and personally — not in a mass text.', 'Make it easy: send them the direct link to your review page.']
+    },
+    {
+      id: 'onl4', section: '⭐ Reputation & Reviews',
+      name: 'Reach 10 reviews total', pts: 100, unlimited: false,
+      desc: 'Your profile hits double digits in reviews.',
+      steps: ['Celebrate this milestone — it is a trust-builder that works for you forever.']
+    },
+    {
+      id: 'onl5', section: '⭐ Reputation & Reviews',
+      name: 'Respond to every review you receive', pts: 10, unlimited: true,
+      desc: 'You personally respond to each review, positive or otherwise.',
+      steps: ['Responding shows professionalism and tells the algorithm your profile is active.']
+    },
+    {
+      id: 'onl6', section: '✨ Influencer & Content Partnerships',
+      name: 'Partner with a local micro-influencer', pts: 80, unlimited: false,
+      desc: 'A local content creator with an engaged following posts about your services.',
+      steps: ['Identify 3-5 local influencers in your area and reach out with a genuine, personalized offer.', 'Offer a complimentary service in exchange for an honest post or story.', 'Make their experience exceptional so the content they create reflects that.']
+    },
+    {
+      id: 'onl7', section: '✨ Influencer & Content Partnerships',
+      name: 'Participate in a photography day', pts: 40, unlimited: false,
+      desc: 'You take part in a professional shoot for your portfolio and online presence.',
+      steps: ['Use these images everywhere — your booking page, your social profiles, your display content.', 'Invest in your visual brand early. It pays back for years.']
+    },
+    {
+      id: 'onl8', section: '🎓 Content & Education',
+      name: 'Post an educational or tip-based piece of content', pts: 20, unlimited: true,
+      desc: 'A tutorial, myth-buster, FAQ, or behind-the-scenes that shows your expertise.',
+      steps: ['Think about the questions clients ask you most and answer them on camera or in a post.', 'Educational content gets saved and shared — which means more eyes on you.']
+    },
+    {
+      id: 'onl9', section: '🎓 Content & Education',
+      name: 'Be featured in press or local media', pts: 100, unlimited: false,
+      desc: 'A blog, magazine, news segment, or podcast features you or Cio Bela.',
+      steps: ['Pitch yourself proactively — do not wait to be discovered.', 'Local lifestyle blogs and morning shows are always looking for stories.']
+    },
+    {
+      id: 'onl10', section: '📣 Facebook Groups & Online Communities',
+      name: 'Join and actively participate in 3 local Facebook groups', pts: 20, unlimited: false,
+      desc: 'You are present, helpful, and visible in local community groups.',
+      steps: ['Search for local neighborhood, mom, and women\'s groups in your area.', 'Be genuinely helpful before you ever mention your services.', 'When someone asks for a recommendation in your category — be the first to respond.']
+    },
+    {
+      id: 'onl11', section: '📣 Facebook Groups & Online Communities',
+      name: 'Receive a booking from a Facebook group recommendation', pts: 60, unlimited: true,
+      desc: 'Someone books you because they saw you recommended in a community group.',
+      steps: ['Track where your bookings come from so you know which communities are working.']
+    },
+  ],
+  community: [
+    {
+      id: 'com1', section: '🔥 Start Here — Show Up In Person',
+      name: 'Attend a local festival or community event', pts: 40, unlimited: true,
+      desc: 'You show up, represent Cio Bela, and make genuine connections.',
+      steps: ['Bring business cards or discount cards every single time.', 'Talk to people. Be warm. Be memorable. Ask what they do before you tell them what you do.', 'Follow up with anyone who expressed interest within 24 hours.']
+    },
+    {
+      id: 'com2', section: '🔥 Start Here — Show Up In Person',
+      name: 'Set up a booth or presence at a local event', pts: 75, unlimited: false,
+      desc: 'Cio Bela has a physical presence at a festival, market, or community gathering.',
+      steps: ['Offer a simple, low-commitment experience that gets people in your chair on the spot.', 'Collect contact info from everyone who stops by.']
+    },
+    {
+      id: 'com3', section: '🔥 Start Here — Show Up In Person',
+      name: 'Attend a gala or formal event representing Cio Bela', pts: 50, unlimited: true,
+      desc: 'You attend a higher-end community event and network intentionally.',
+      steps: ['Look the part. Bring cards. Have your elevator pitch ready in one sentence.', 'Follow up with every meaningful connection you make.']
+    },
+    {
+      id: 'com4', section: '🤝 Networking Events',
+      name: 'Attend an organized networking event', pts: 35, unlimited: true,
+      desc: "WGNO, The Woodlands Women's Collective, and local professional groups are full of your ideal clients.",
+      steps: ['Show up consistently — people do business with faces they recognize.', 'Bring something to give — a card, a discount, a small branded item.', 'Set a goal: leave with at least 3 real conversations and contact exchanges.']
+    },
+    {
+      id: 'com5', section: '🤝 Networking Events',
+      name: 'Build a genuine referral relationship from networking', pts: 75, unlimited: false,
+      desc: 'A professional you met at an event sends a client your way.',
+      steps: ['Follow up after every event with a personal message to people you connected with.', 'Nurture these relationships — check in, support their business, be real.']
+    },
+    {
+      id: 'com6', section: '🤝 Networking Events',
+      name: 'Join a recurring networking group or collective', pts: 50, unlimited: false,
+      desc: 'You become a consistent member of a professional women\'s group or local business network.',
+      steps: ['Consistency in these groups is everything. One visit means nothing. Regular presence builds trust.']
+    },
+    {
+      id: 'com7', section: '💍 Bridal & Events Pipeline',
+      name: 'Book a bridal, quinceañera, or prom group', pts: 100, unlimited: true,
+      desc: 'You secure a group booking for a special event.',
+      steps: ['Reach out to local wedding planners and event coordinators proactively.', 'Create a simple group package so it is easy for them to say yes.', 'Make the experience so special that every person in that group becomes a regular client.']
+    },
+    {
+      id: 'com8', section: '💍 Bridal & Events Pipeline',
+      name: 'Build a relationship with a local event planner or bridal boutique', pts: 75, unlimited: false,
+      desc: 'A formal partnership where they refer clients to Cio Bela regularly.',
+      steps: ['Visit local boutiques in person and introduce yourself.', 'Leave them with something to give their clients — a card, a discount, a package menu.']
+    },
+    {
+      id: 'com9', section: '🤲 Charitable & Cause Marketing',
+      name: 'Participate in or sponsor a local charity event', pts: 50, unlimited: false,
+      desc: 'Cio Bela is represented at a fundraiser, school event, or cause-based gathering.',
+      steps: ['Choose a cause that genuinely matters to you — authenticity is everything.', 'Document your participation and share it online.']
+    },
+    {
+      id: 'com10', section: '🤲 Charitable & Cause Marketing',
+      name: 'Donate services to a local fundraiser or auction', pts: 40, unlimited: false,
+      desc: 'You offer a complimentary service as a prize or donation.',
+      steps: ['The person who wins almost always becomes a real client.', 'The organization promoting the auction promotes you in the process.']
+    },
+    {
+      id: 'com11', section: '🤝 Partnerships & Cross-Referrals',
+      name: 'Establish a formal referral partnership with a local business', pts: 60, unlimited: false,
+      desc: 'A gym, med spa, boutique, photographer, or dermatologist agrees to refer clients to you.',
+      steps: ['Walk in, introduce yourself, bring something for their front desk.', 'Make it easy for them to refer — give them cards, a discount for their clients, or a simple agreement.', 'Send them clients too. Referral relationships are two-way streets.']
+    },
+    {
+      id: 'com12', section: '🤝 Partnerships & Cross-Referrals',
+      name: 'Receive your first cross-referral booking', pts: 75, unlimited: true,
+      desc: 'A new client books with you because a partner business sent them.',
+      steps: ['Thank the partner personally every time this happens.', 'Track which partnerships are producing so you can invest more in the ones that work.']
+    },
+  ]
+};
+
+// ══════════════════════════════════════════
+// STATE & STORAGE
+// ══════════════════════════════════════════
+
+let currentArtist = null;
+let selectedArtistId = null;
+
+function getStorage(artistId) {
+  const key = `ciobela_${artistId}`;
+  const raw = localStorage.getItem(key);
+  if (!raw) return { pin: null, points: 0, completed: {} };
+  return JSON.parse(raw);
+}
+
+function saveStorage(artistId, data) {
+  localStorage.setItem(`ciobela_${artistId}`, JSON.stringify(data));
+}
+
+function getTeamTotal() {
+  return ARTISTS.reduce((sum, a) => {
+    const d = getStorage(a.id);
+    return sum + (d.points || 0);
+  }, 0);
+}
+
+function getLevel(pts) {
+  for (let i = LEVELS.length - 1; i >= 0; i--) {
+    if (pts >= LEVELS[i].min) return i;
+  }
+  return 0;
+}
+
+// ══════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════
+
+function initLogin() {
+  const grid = document.getElementById('artist-grid');
+  grid.innerHTML = '';
+  ARTISTS.forEach(a => {
+    const btn = document.createElement('div');
+    btn.className = 'artist-btn';
+    btn.innerHTML = `<span class="artist-emoji">${a.emoji}</span>${a.name}<div class="artist-role">${a.role}</div>`;
+    btn.onclick = () => selectArtist(a.id, btn);
+    grid.appendChild(btn);
+  });
+}
+
+function selectArtist(id, btn) {
+  selectedArtistId = id;
+  document.querySelectorAll('.artist-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('login-error').textContent = '';
+}
+
+function handleLogin() {
+  const err = document.getElementById('login-error');
+  if (!selectedArtistId) { err.textContent = 'Please select your profile first.'; return; }
+  const pin = document.getElementById('pin-input').value.trim();
+  if (pin.length !== 4 || !/^\d{4}$/.test(pin)) { err.textContent = 'Please enter a 4-digit PIN.'; return; }
+
+  const data = getStorage(selectedArtistId);
+  if (!data.pin) {
+    data.pin = pin;
+    saveStorage(selectedArtistId, data);
+  } else if (data.pin !== pin) {
+    err.textContent = 'Incorrect PIN. Try again.';
+    return;
+  }
+
+  currentArtist = ARTISTS.find(a => a.id === selectedArtistId);
+  showDashboard(data);
+}
+
+// ══════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════
+
+function showDashboard(data) {
+  document.getElementById('login-screen').classList.remove('active');
+  document.getElementById('dashboard-screen').classList.add('active');
+
+  document.getElementById('top-avatar').textContent = currentArtist.emoji;
+  document.getElementById('top-name').textContent = currentArtist.name;
+
+  buildActions();
+  updateUI(data);
+  showCatById('network');
+}
+
+function buildActions() {
+  Object.entries(ACTIONS).forEach(([catId, actions]) => {
+    const container = document.getElementById(`actions-${catId}`);
+    container.innerHTML = '';
+    let currentSection = '';
+
+    actions.forEach(action => {
+      if (action.section !== currentSection) {
+        currentSection = action.section;
+        const label = document.createElement('div');
+        label.className = 'section-label';
+        label.textContent = action.section;
+        container.appendChild(label);
+      }
+
+      const card = document.createElement('div');
+      card.className = 'action-card';
+      card.id = `card-${action.id}`;
+
+      card.innerHTML = `
+        <div class="action-top">
+          <div class="action-check" onclick="toggleAction('${action.id}', ${action.pts}, event)">✓</div>
+          <div class="action-content">
+            <div class="action-name">
+              ${action.name}
+              ${action.unlimited ? '<span class="unlimited-badge">UNLIMITED</span>' : ''}
+            </div>
+            <div class="action-desc">${action.desc}</div>
+            <div class="action-steps">
+              ${action.steps.map(s => `<div class="action-step">${s}</div>`).join('')}
+            </div>
+          </div>
+        </div>
+        <div class="action-bottom">
+          <div class="pts-badge">${action.pts} <span>pts</span></div>
+          <button class="expand-btn" onclick="toggleExpand('${action.id}')">Action Steps ▾</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  });
+}
+
+function updateUI(data) {
+  const pts = data.points || 0;
+  const levelIdx = getLevel(pts);
+  const level = LEVELS[levelIdx];
+  const nextLevel = LEVELS[levelIdx + 1];
+
+  // Top bar
+  document.getElementById('top-points').textContent = pts.toLocaleString();
+  const badge = document.getElementById('top-level-badge');
+  badge.textContent = level.name;
+  badge.style.color = getLevelColor(levelIdx);
+  badge.style.borderColor = getLevelColor(levelIdx);
+
+  // Level card
+  document.getElementById('level-gem').textContent = level.gem;
+  document.getElementById('level-name').textContent = level.name;
+  document.getElementById('level-range').textContent = `${level.min.toLocaleString()} – ${level.max === Infinity ? '∞' : level.max.toLocaleString()} pts`;
+
+  if (nextLevel) {
+    const ptsInLevel = pts - level.min;
+    const levelSize = nextLevel.min - level.min;
+    const pct = Math.min(100, (ptsInLevel / levelSize) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('pts-to-next').textContent = (nextLevel.min - pts).toLocaleString();
+    document.getElementById('prog-label-start').textContent = level.min;
+    document.getElementById('prog-label-next').textContent = nextLevel.min + ' → ' + nextLevel.name;
+  } else {
+    document.getElementById('progress-fill').style.width = '100%';
+    document.getElementById('pts-to-next').textContent = '✦';
+    document.getElementById('prog-label-next').textContent = 'DIAMOND ACHIEVED';
+  }
+
+  // Stats
+  const completed = data.completed || {};
+  const completedCount = Object.values(completed).filter(v => v).length;
+  document.getElementById('stat-completed').textContent = completedCount;
+
+  const catsActive = ['network','salon','online','community'].filter(cat =>
+    ACTIONS[cat].some(a => completed[a.id])
+  ).length;
+  document.getElementById('stat-cats').textContent = `${catsActive}/4`;
+
+  // Team total
+  document.getElementById('team-total-pts').textContent = getTeamTotal().toLocaleString();
+
+  // Mark completed cards
+  Object.entries(completed).forEach(([id, done]) => {
+    const card = document.getElementById(`card-${id}`);
+    if (card) card.classList.toggle('completed', !!done);
+  });
+}
+
+function getLevelColor(idx) {
+  const colors = ['#6B6B6B', '#CD7F32', '#C0C0C0', '#C9A85C', '#B8A0C8', '#A8D8EA'];
+  return colors[idx] || '#C9A85C';
+}
+
+function toggleAction(actionId, pts, event) {
+  event.stopPropagation();
+  const data = getStorage(currentArtist.id);
+  const completed = data.completed || {};
+  const wasDone = !!completed[actionId];
+  const prevLevel = getLevel(data.points || 0);
+
+  if (!wasDone) {
+    completed[actionId] = true;
+    data.points = (data.points || 0) + pts;
+    showPtsPopup(pts, event);
+  } else {
+    completed[actionId] = false;
+    data.points = Math.max(0, (data.points || 0) - pts);
+  }
+
+  data.completed = completed;
+  saveStorage(currentArtist.id, data);
+
+  const newLevel = getLevel(data.points);
+  updateUI(data);
+
+  if (!wasDone && newLevel > prevLevel) {
+    setTimeout(() => showLevelUp(newLevel), 800);
+  }
+}
+
+function toggleExpand(actionId) {
+  const card = document.getElementById(`card-${actionId}`);
+  card.classList.toggle('expanded');
+  const btn = card.querySelector('.expand-btn');
+  btn.textContent = card.classList.contains('expanded') ? 'Hide Steps ▴' : 'Action Steps ▾';
+}
+
+function showPtsPopup(pts, event) {
+  const popup = document.createElement('div');
+  popup.className = 'pts-popup';
+  popup.textContent = `+${pts}`;
+  popup.style.left = (event.clientX - 20) + 'px';
+  popup.style.top = (event.clientY - 20) + 'px';
+  document.body.appendChild(popup);
+  setTimeout(() => popup.remove(), 1500);
+}
+
+function showLevelUp(levelIdx) {
+  const level = LEVELS[levelIdx];
+  document.getElementById('lu-gem').textContent = level.gem;
+  document.getElementById('lu-name').textContent = level.name;
+  document.getElementById('lu-reward').textContent = level.reward;
+  document.getElementById('levelup-overlay').classList.add('show');
+  spawnConfetti();
+}
+
+function closeLevelUp() {
+  document.getElementById('levelup-overlay').classList.remove('show');
+}
+
+function spawnConfetti() {
+  const colors = ['#C9A85C', '#E8CF8A', '#A8D8EA', '#B8A0C8', '#CD7F32', '#C0C0C0'];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + 'vw';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+      piece.style.animationDelay = Math.random() * 0.5 + 's';
+      piece.style.width = piece.style.height = (6 + Math.random() * 8) + 'px';
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), 3000);
+    }, i * 30);
+  }
+}
+
+function logout() {
+  currentArtist = null;
+  selectedArtistId = null;
+  document.getElementById('pin-input').value = '';
+  document.getElementById('login-error').textContent = '';
+  document.querySelectorAll('.artist-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('dashboard-screen').classList.remove('active');
+  document.getElementById('login-screen').classList.add('active');
+}
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+
+function showCat(catId, pill) {
+  document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  showCatById(catId);
+}
+
+function showCatById(catId) {
+  document.querySelectorAll('.category-section').forEach(s => s.classList.remove('active'));
+  document.getElementById(`cat-${catId}`).classList.add('active');
+}
+
+function showTab(tab) {
+  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`bnav-${tab}`).classList.add('active');
+
+  if (tab === 'levels') {
+    document.getElementById('levels-modal').classList.add('show');
+  } else if (tab === 'rules') {
+    document.getElementById('rules-modal').classList.add('show');
+  }
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('bnav-game').classList.add('active');
+}
+
+// ── INIT ──
+initLogin();
+</script>
+</body>
+</html>
