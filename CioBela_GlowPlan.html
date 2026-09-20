@@ -903,7 +903,40 @@
   .lb-role { font-size: 10px; color: var(--text-muted); }
   .lb-clicks { font-family: 'Cinzel', serif; font-size: 14px; color: var(--gold-light); flex-shrink: 0; }
   .lb-empty { text-align: center; padding: 20px 0; color: var(--text-muted); font-size: 13px; }
+
+  .pending-badge {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    background: rgba(201,168,92,0.15);
+    color: var(--gold);
+    border: 1px solid rgba(201,168,92,0.4);
+    border-radius: 20px;
+    padding: 2px 8px;
+    margin-left: 6px;
+    text-transform: uppercase;
+  }
+  .aq-row {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .aq-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .aq-artist { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--gold); }
+  .aq-action { font-size: 13px; color: var(--text); margin-top: 2px; }
+  .aq-pts { font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold-light); white-space: nowrap; }
+  .aq-photo { max-width: 100%; border-radius: 8px; margin: 8px 0; border: 1px solid var(--border); }
+  .aq-actions { display: flex; gap: 8px; margin-top: 8px; }
+  .aq-approve, .aq-reject {
+    flex: 1; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+    border: none; border-radius: 8px; padding: 10px; cursor: pointer;
+  }
+  .aq-approve { background: var(--gold); color: var(--bg); }
+  .aq-reject { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -1069,6 +1102,9 @@
     <button class="bnav-btn" id="bnav-leaderboard" onclick="showTab('leaderboard')">
       <span class="bnav-icon">🏆</span>Leaderboard
     </button>
+    <button class="bnav-btn" id="bnav-admin" onclick="showTab('admin')">
+      <span class="bnav-icon">🛡️</span>Admin
+    </button>
   </div>
 
 </div>
@@ -1124,6 +1160,42 @@
     <div class="lb-catbar" id="lb-catbar"></div>
     <div id="lb-content"><div class="modal-rule">Loading...</div></div>
     <button class="modal-close" onclick="closeModal('leaderboard-modal')">Close</button>
+  </div>
+</div>
+
+<!-- Claim Submission Modal -->
+<div class="modal-overlay" id="claim-modal">
+  <div class="modal-card">
+    <div class="modal-title" id="claim-title">✦ SUBMIT FOR APPROVAL</div>
+    <div class="modal-rule" id="claim-action-name" style="color:var(--text);font-size:14px;"></div>
+    <div class="modal-rule" id="claim-pts" style="margin-bottom:16px;"></div>
+    <div class="modal-rule">Add a photo if you've got one — a screenshot, a booking, a before/after. Not required for every action, but it helps your claim get approved fast.</div>
+    <input type="file" accept="image/*" capture="environment" id="claim-photo-input" style="margin:12px 0;color:var(--text-muted);font-size:12px;width:100%;">
+    <img id="claim-photo-preview" style="display:none;max-width:100%;border-radius:10px;margin-bottom:10px;border:1px solid var(--border);">
+    <div class="modal-rule" id="claim-error" style="color:#E8A0A0;"></div>
+    <button class="modal-close" onclick="submitClaim()" id="claim-submit-btn">Submit for Approval</button>
+    <button class="modal-close" style="background:var(--surface2);color:var(--text-muted);margin-top:8px;" onclick="closeModal('claim-modal')">Cancel</button>
+  </div>
+</div>
+
+<!-- Admin Passcode Modal -->
+<div class="modal-overlay" id="admin-pass-modal">
+  <div class="modal-card">
+    <div class="modal-title">🛡️ OWNER ACCESS</div>
+    <div class="modal-rule">Enter the owner passcode to review pending claims.</div>
+    <input type="password" id="admin-pass-input" maxlength="4" inputmode="numeric" placeholder="Passcode" class="pin-input" style="margin:12px 0;">
+    <div class="modal-rule" id="admin-pass-error" style="color:#E8A0A0;"></div>
+    <button class="modal-close" onclick="checkAdminPasscode()">Enter</button>
+    <button class="modal-close" style="background:var(--surface2);color:var(--text-muted);margin-top:8px;" onclick="closeModal('admin-pass-modal')">Cancel</button>
+  </div>
+</div>
+
+<!-- Admin Approval Queue Modal -->
+<div class="modal-overlay" id="admin-queue-modal">
+  <div class="modal-card" style="max-width:560px;">
+    <div class="modal-title">🛡️ PENDING CLAIMS</div>
+    <div id="admin-queue-content"><div class="modal-rule">Loading...</div></div>
+    <button class="modal-close" onclick="closeModal('admin-queue-modal')">Close</button>
   </div>
 </div>
 
@@ -1431,28 +1503,48 @@ const ACTIONS = {
 };
 
 // ══════════════════════════════════════════
+// FIREBASE
+// ══════════════════════════════════════════
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA2qER2_r7NhdXK0aB3NJpInRtNfiQGOMY",
+  authDomain: "cio-bela-glow-plan-game.firebaseapp.com",
+  projectId: "cio-bela-glow-plan-game",
+  storageBucket: "cio-bela-glow-plan-game.firebasestorage.app",
+  messagingSenderId: "355826284682",
+  appId: "1:355826284682:web:2387aedcf10e48dde55573"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const ADMIN_PASSCODE = '4834';
+
+// ══════════════════════════════════════════
 // STATE & STORAGE
 // ══════════════════════════════════════════
 
 let currentArtist = null;
 let selectedArtistId = null;
+let progressData = { pin: null, points: 0, completed: {} };
+let teamTotals = {}; // artistId -> points, kept live via a collection-wide listener
+let myPendingClaims = []; // this artist's own pending/rejected claims, live
+let progressUnsub = null;
+let claimsUnsub = null;
 
-function getStorage(artistId) {
-  const key = `ciobela_${artistId}`;
-  const raw = localStorage.getItem(key);
-  if (!raw) return { pin: null, points: 0, completed: {} };
-  return JSON.parse(raw);
-}
+function progressRef(artistId) { return db.collection('progress').doc(artistId); }
 
-function saveStorage(artistId, data) {
-  localStorage.setItem(`ciobela_${artistId}`, JSON.stringify(data));
-}
+// Keeps team totals live across every device, always-on regardless of login state
+db.collection('progress').onSnapshot(snap => {
+  const totals = {};
+  snap.forEach(doc => { totals[doc.id] = (doc.data().points || 0); });
+  teamTotals = totals;
+  if (currentArtist) {
+    const el = document.getElementById('team-total-pts');
+    if (el) el.textContent = getTeamTotal().toLocaleString();
+  }
+}, err => console.error('team totals listener', err));
 
 function getTeamTotal() {
-  return ARTISTS.reduce((sum, a) => {
-    const d = getStorage(a.id);
-    return sum + (d.points || 0);
-  }, 0);
+  return ARTISTS.reduce((sum, a) => sum + (teamTotals[a.id] || 0), 0);
 }
 
 function getLevel(pts) {
@@ -1485,30 +1577,39 @@ function selectArtist(id, btn) {
   document.getElementById('login-error').textContent = '';
 }
 
-function handleLogin() {
+async function handleLogin() {
   const err = document.getElementById('login-error');
   if (!selectedArtistId) { err.textContent = 'Please select your profile first.'; return; }
   const pin = document.getElementById('pin-input').value.trim();
   if (pin.length !== 4 || !/^\d{4}$/.test(pin)) { err.textContent = 'Please enter a 4-digit PIN.'; return; }
 
-  const data = getStorage(selectedArtistId);
-  if (!data.pin) {
-    data.pin = pin;
-    saveStorage(selectedArtistId, data);
-  } else if (data.pin !== pin) {
-    err.textContent = 'Incorrect PIN. Try again.';
-    return;
-  }
+  err.textContent = 'Checking...';
+  try {
+    const doc = await progressRef(selectedArtistId).get();
+    const data = doc.exists ? doc.data() : null;
 
-  currentArtist = ARTISTS.find(a => a.id === selectedArtistId);
-  showDashboard(data);
+    if (!data || !data.pin) {
+      await progressRef(selectedArtistId).set({
+        pin, points: 0, completed: {}, updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    } else if (data.pin !== pin) {
+      err.textContent = 'Incorrect PIN. Try again.';
+      return;
+    }
+
+    err.textContent = '';
+    currentArtist = ARTISTS.find(a => a.id === selectedArtistId);
+    showDashboard();
+  } catch (e) {
+    err.textContent = "Couldn't reach the server. Check your connection and try again.";
+  }
 }
 
 // ══════════════════════════════════════════
 // DASHBOARD
 // ══════════════════════════════════════════
 
-function showDashboard(data) {
+function showDashboard() {
   document.getElementById('login-screen').classList.remove('active');
   document.getElementById('dashboard-screen').classList.add('active');
 
@@ -1516,8 +1617,29 @@ function showDashboard(data) {
   document.getElementById('top-name').textContent = currentArtist.name;
 
   buildActions();
-  updateUI(data);
   showCatById('network');
+
+  // Live progress listener — updates this device the instant anything
+  // changes, including an owner approving a claim from a different device.
+  const prevLevel = { idx: null };
+  progressUnsub = progressRef(currentArtist.id).onSnapshot(doc => {
+    const data = doc.exists ? doc.data() : { points: 0, completed: {} };
+    progressData = data;
+    const newLevel = getLevel(data.points || 0);
+    updateUI(data);
+    if (prevLevel.idx !== null && newLevel > prevLevel.idx) {
+      setTimeout(() => showLevelUp(newLevel), 600);
+    }
+    prevLevel.idx = newLevel;
+  }, err => console.error('progress listener', err));
+
+  // Live listener on this artist's own claims, so pending/rejected badges update instantly
+  claimsUnsub = db.collection('claims').where('artistId', '==', currentArtist.id)
+    .onSnapshot(snap => {
+      myPendingClaims = [];
+      snap.forEach(doc => myPendingClaims.push({ id: doc.id, ...doc.data() }));
+      updateCardBadges();
+    }, err => console.error('claims listener', err));
 }
 
 function buildActions() {
@@ -1541,11 +1663,12 @@ function buildActions() {
 
       card.innerHTML = `
         <div class="action-top">
-          <div class="action-check" onclick="toggleAction('${action.id}', ${action.pts}, event)">✓</div>
+          <div class="action-check" id="check-${action.id}" onclick="openClaimModal('${action.id}', event)">✓</div>
           <div class="action-content">
             <div class="action-name">
               ${action.name}
               ${action.unlimited ? '<span class="unlimited-badge">UNLIMITED</span>' : ''}
+              <span class="pending-badge" id="badge-${action.id}" style="display:none;">Pending Review</span>
             </div>
             <div class="action-desc">${action.desc}</div>
             <div class="action-steps">
@@ -1563,20 +1686,27 @@ function buildActions() {
   });
 }
 
+function updateCardBadges() {
+  document.querySelectorAll('[id^="badge-"]').forEach(b => b.style.display = 'none');
+  myPendingClaims.forEach(c => {
+    if (c.status !== 'pending') return;
+    const badge = document.getElementById(`badge-${c.actionId}`);
+    if (badge) badge.style.display = 'inline-block';
+  });
+}
+
 function updateUI(data) {
   const pts = data.points || 0;
   const levelIdx = getLevel(pts);
   const level = LEVELS[levelIdx];
   const nextLevel = LEVELS[levelIdx + 1];
 
-  // Top bar
   document.getElementById('top-points').textContent = pts.toLocaleString();
   const badge = document.getElementById('top-level-badge');
   badge.textContent = level.name;
   badge.style.color = getLevelColor(levelIdx);
   badge.style.borderColor = getLevelColor(levelIdx);
 
-  // Level card
   document.getElementById('level-gem').textContent = level.gem;
   document.getElementById('level-name').textContent = level.name;
   document.getElementById('level-range').textContent = `${level.min.toLocaleString()} – ${level.max === Infinity ? '∞' : level.max.toLocaleString()} pts`;
@@ -1595,7 +1725,6 @@ function updateUI(data) {
     document.getElementById('prog-label-next').textContent = 'DIAMOND ACHIEVED';
   }
 
-  // Stats
   const completed = data.completed || {};
   const completedCount = Object.values(completed).filter(v => v).length;
   document.getElementById('stat-completed').textContent = completedCount;
@@ -1605,10 +1734,8 @@ function updateUI(data) {
   ).length;
   document.getElementById('stat-cats').textContent = `${catsActive}/4`;
 
-  // Team total
   document.getElementById('team-total-pts').textContent = getTeamTotal().toLocaleString();
 
-  // Mark completed cards
   Object.entries(completed).forEach(([id, done]) => {
     const card = document.getElementById(`card-${id}`);
     if (card) card.classList.toggle('completed', !!done);
@@ -1620,30 +1747,98 @@ function getLevelColor(idx) {
   return colors[idx] || '#C9A85C';
 }
 
-function toggleAction(actionId, pts, event) {
-  event.stopPropagation();
-  const data = getStorage(currentArtist.id);
-  const completed = data.completed || {};
-  const wasDone = !!completed[actionId];
-  const prevLevel = getLevel(data.points || 0);
+// ══════════════════════════════════════════
+// CLAIM SUBMISSION (replaces instant self-check)
+// ══════════════════════════════════════════
 
-  if (!wasDone) {
-    completed[actionId] = true;
-    data.points = (data.points || 0) + pts;
-    showPtsPopup(pts, event);
-  } else {
-    completed[actionId] = false;
-    data.points = Math.max(0, (data.points || 0) - pts);
+let claimActionId = null;
+let claimActionPts = null;
+let claimPhotoData = null;
+
+function findAction(actionId) {
+  for (const cat of Object.values(ACTIONS)) {
+    const found = cat.find(a => a.id === actionId);
+    if (found) return found;
   }
+  return null;
+}
 
-  data.completed = completed;
-  saveStorage(currentArtist.id, data);
+function openClaimModal(actionId, event) {
+  if (event) event.stopPropagation();
+  const action = findAction(actionId);
+  if (!action) return;
 
-  const newLevel = getLevel(data.points);
-  updateUI(data);
+  const already = progressData.completed && progressData.completed[actionId];
+  if (already && !action.unlimited) return; // already approved, one-time action, nothing to do
 
-  if (!wasDone && newLevel > prevLevel) {
-    setTimeout(() => showLevelUp(newLevel), 800);
+  const pending = myPendingClaims.some(c => c.actionId === actionId && c.status === 'pending');
+  if (pending) return; // already waiting on review
+
+  claimActionId = actionId;
+  claimActionPts = action.pts;
+  claimPhotoData = null;
+  document.getElementById('claim-action-name').textContent = action.name;
+  document.getElementById('claim-pts').textContent = action.pts + ' points';
+  document.getElementById('claim-error').textContent = '';
+  document.getElementById('claim-photo-input').value = '';
+  document.getElementById('claim-photo-preview').style.display = 'none';
+  document.getElementById('claim-modal').classList.add('show');
+}
+
+document.getElementById('claim-photo-input').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if (!file) { claimPhotoData = null; return; }
+  compressImage(file, (dataUrl) => {
+    claimPhotoData = dataUrl;
+    const preview = document.getElementById('claim-photo-preview');
+    preview.src = dataUrl;
+    preview.style.display = 'block';
+  });
+});
+
+// Resizes + compresses so the finished claim document stays well under
+// Firestore's 1MB document limit — proof-quality, not portfolio-quality.
+function compressImage(file, callback){
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const maxDim = 900;
+      let w = img.width, h = img.height;
+      if (w > h && w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+      else if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL('image/jpeg', 0.55));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function submitClaim(){
+  const btn = document.getElementById('claim-submit-btn');
+  const err = document.getElementById('claim-error');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+  try {
+    await db.collection('claims').add({
+      artistId: currentArtist.id,
+      artistName: currentArtist.name,
+      actionId: claimActionId,
+      actionName: findAction(claimActionId).name,
+      pts: claimActionPts,
+      photo: claimPhotoData || null,
+      status: 'pending',
+      submittedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    closeModal('claim-modal');
+  } catch (e) {
+    err.textContent = "Couldn't submit right now. Check your connection and try again.";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Submit for Approval';
   }
 }
 
@@ -1652,16 +1847,6 @@ function toggleExpand(actionId) {
   card.classList.toggle('expanded');
   const btn = card.querySelector('.expand-btn');
   btn.textContent = card.classList.contains('expanded') ? 'Hide Steps ▴' : 'Action Steps ▾';
-}
-
-function showPtsPopup(pts, event) {
-  const popup = document.createElement('div');
-  popup.className = 'pts-popup';
-  popup.textContent = `+${pts}`;
-  popup.style.left = (event.clientX - 20) + 'px';
-  popup.style.top = (event.clientY - 20) + 'px';
-  document.body.appendChild(popup);
-  setTimeout(() => popup.remove(), 1500);
 }
 
 function showLevelUp(levelIdx) {
@@ -1695,6 +1880,8 @@ function spawnConfetti() {
 }
 
 function logout() {
+  if (progressUnsub) progressUnsub();
+  if (claimsUnsub) claimsUnsub();
   currentArtist = null;
   selectedArtistId = null;
   document.getElementById('pin-input').value = '';
@@ -1730,7 +1917,91 @@ function showTab(tab) {
   } else if (tab === 'leaderboard') {
     document.getElementById('leaderboard-modal').classList.add('show');
     loadLeaderboard();
+  } else if (tab === 'admin') {
+    document.getElementById('admin-pass-input').value = '';
+    document.getElementById('admin-pass-error').textContent = '';
+    document.getElementById('admin-pass-modal').classList.add('show');
   }
+}
+
+function checkAdminPasscode(){
+  const input = document.getElementById('admin-pass-input').value.trim();
+  if (input !== ADMIN_PASSCODE){
+    document.getElementById('admin-pass-error').textContent = 'Incorrect passcode.';
+    return;
+  }
+  closeModal('admin-pass-modal');
+  document.getElementById('admin-queue-modal').classList.add('show');
+  loadAdminQueue();
+}
+
+async function loadAdminQueue(){
+  const content = document.getElementById('admin-queue-content');
+  content.innerHTML = '<div class="modal-rule">Loading pending claims...</div>';
+  try {
+    const snap = await db.collection('claims').where('status', '==', 'pending').get();
+    if (snap.empty){
+      content.innerHTML = '<div class="lb-empty">No pending claims right now.</div>';
+      return;
+    }
+    let claims = [];
+    snap.forEach(doc => claims.push({ id: doc.id, ...doc.data() }));
+    claims.sort((a,b) => (a.submittedAt?.seconds || 0) - (b.submittedAt?.seconds || 0));
+
+    let html = '';
+    claims.forEach(c => {
+      html += '<div class="aq-row">';
+      html += '<div class="aq-top"><div><div class="aq-artist">' + escapeHtml(c.artistName) + '</div>';
+      html += '<div class="aq-action">' + escapeHtml(c.actionName) + '</div></div>';
+      html += '<div class="aq-pts">' + c.pts + ' pts</div></div>';
+      if (c.photo) html += '<img class="aq-photo" src="' + c.photo + '">';
+      html += '<div class="aq-actions">';
+      html += '<button class="aq-approve" onclick="approveClaim(\'' + c.id + '\',\'' + c.artistId + '\',\'' + c.actionId + '\',' + c.pts + ')">Approve</button>';
+      html += '<button class="aq-reject" onclick="rejectClaim(\'' + c.id + '\')">Reject</button>';
+      html += '</div></div>';
+    });
+    content.innerHTML = html;
+  } catch(e){
+    content.innerHTML = '<div class="lb-empty">Couldn\'t load claims right now. Try again in a moment.</div>';
+  }
+}
+
+async function approveClaim(claimId, artistId, actionId, pts){
+  try {
+    await db.runTransaction(async (tx) => {
+      const ref = progressRef(artistId);
+      const doc = await tx.get(ref);
+      const data = doc.exists ? doc.data() : { points: 0, completed: {} };
+      const completed = data.completed || {};
+      completed[actionId] = true;
+      tx.set(ref, {
+        points: (data.points || 0) + pts,
+        completed,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+      tx.update(db.collection('claims').doc(claimId), {
+        status: 'approved', reviewedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    });
+    loadAdminQueue();
+  } catch(e){
+    alert("Couldn't approve right now — check your connection and try again.");
+  }
+}
+
+async function rejectClaim(claimId){
+  try {
+    await db.collection('claims').doc(claimId).update({
+      status: 'rejected', reviewedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    loadAdminQueue();
+  } catch(e){
+    alert("Couldn't reject right now — check your connection and try again.");
+  }
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 // ══════════════════════════════════════════
