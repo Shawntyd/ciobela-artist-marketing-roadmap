@@ -1118,8 +1118,9 @@
 <!-- Leaderboard Modal -->
 <div class="modal-overlay" id="leaderboard-modal">
   <div class="modal-card">
-    <div class="modal-title">🏆 LINK CLICK LEADERBOARD</div>
-    <div class="modal-rule" style="margin-bottom:16px;">Real clicks on your Facebook group links, live from the tracker — not honor system. Refreshes each time you open this tab.</div>
+    <div class="modal-title">🏆 LEADERBOARD</div>
+    <div class="modal-rule" style="margin-bottom:16px;">Live from the tracker — real unique visitors, time on site, and pages viewed. Not honor system.</div>
+    <div class="lb-catbar" id="lb-metricbar"></div>
     <div class="lb-catbar" id="lb-catbar"></div>
     <div id="lb-content"><div class="modal-rule">Loading...</div></div>
     <button class="modal-close" onclick="closeModal('leaderboard-modal')">Close</button>
@@ -1738,63 +1739,130 @@ function showTab(tab) {
 
 const LB_LOG_URL = 'https://raw.githubusercontent.com/Shawntyd/cio-bela-20-off-promo/main/visits.log';
 let lbCategory = 'all';
-let lbCounts = null;
+let lbMetric = 'unique';
+let lbStats = null;
 
 async function loadLeaderboard(){
   const content = document.getElementById('lb-content');
-  content.innerHTML = '<div class="modal-rule">Loading live click data...</div>';
+  content.innerHTML = '<div class="modal-rule">Loading live site data...</div>';
   try {
     const resp = await fetch(LB_LOG_URL + '?t=' + Date.now(), {cache:'no-store'});
     if (!resp.ok) throw new Error('status ' + resp.status);
     const text = await resp.text();
     const lines = text.split('\n').filter(l => l.trim().length > 0);
-    const counts = {};
-    ARTISTS.forEach(a => counts[a.id] = 0);
-    lines.forEach(l => {
-      let e;
-      try { e = JSON.parse(l); } catch(err) { return; }
-      if (e.utm_source !== 'facebook_groups') return;
-      if ((e.event || 'view') !== 'view') return;
-      const who = e.utm_content;
-      if (who && counts.hasOwnProperty(who)) counts[who]++;
-    });
-    lbCounts = counts;
-    buildLbCatbar();
+    let entries = lines.map(l => {
+      try { return JSON.parse(l); } catch(err) { return null; }
+    }).filter(e => e !== null && e.utm_source === 'facebook_groups');
+
+    lbStats = buildLbStats(entries);
+    buildLbBars();
     renderLeaderboard();
   } catch(err){
     content.innerHTML = '<div class="lb-empty">Couldn\'t load live data right now. Try reopening this tab in a moment.</div>';
   }
 }
 
-function buildLbCatbar(){
-  const bar = document.getElementById('lb-catbar');
+// Groups by session_id (a visitor's whole path across the site, no matter
+// which pages), figures each step's duration the same way the tracker does,
+// then attributes the whole session to whichever artist's tag started it.
+function buildLbStats(entries){
+  const groups = {};
+  entries.forEach(e => {
+    const sid = e.session_id || 'unlabeled-' + (e.ts || Math.random());
+    (groups[sid] = groups[sid] || []).push(e);
+  });
+
+  const stats = {};
+  ARTISTS.forEach(a => stats[a.id] = {sessions: 0, duration: 0, pages: 0});
+
+  Object.values(groups).forEach(events => {
+    events.sort((a,b) => new Date(a.ts) - new Date(b.ts));
+    const artistId = (events.find(e => e.utm_content) || {}).utm_content;
+    if (!artistId || !stats.hasOwnProperty(artistId)) return;
+
+    let sessionDuration = 0;
+    let sessionPages = 0;
+    events.forEach((e, i) => {
+      if (e.event === 'exit') return;
+      if ((e.event || 'view') === 'view') sessionPages++;
+      let duration = 0;
+      const next = events[i+1];
+      if (next) {
+        duration = Math.round((new Date(next.ts) - new Date(e.ts)) / 1000);
+      } else {
+        const matchingExit = events.find(x => x.event === 'exit' && x.page === e.page && new Date(x.ts) >= new Date(e.ts));
+        if (matchingExit && matchingExit.duration_seconds !== '') duration = Number(matchingExit.duration_seconds) || 0;
+      }
+      sessionDuration += duration;
+    });
+
+    stats[artistId].sessions += 1;
+    stats[artistId].duration += sessionDuration;
+    stats[artistId].pages += sessionPages;
+  });
+
+  return stats;
+}
+
+function formatLbDuration(seconds){
+  if (!seconds) return '0s';
+  if (seconds < 60) return seconds + 's';
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return m + 'm ' + s + 's';
+}
+
+function buildLbBars(){
+  const catBar = document.getElementById('lb-catbar');
   const cats = [
     {key:'all', label:'All'},
     {key:'lash', label:'Lash'},
     {key:'nails', label:'Nails'},
     {key:'waxing', label:'Waxing'}
   ];
-  bar.innerHTML = '';
+  catBar.innerHTML = '';
   cats.forEach(c => {
     const btn = document.createElement('button');
     btn.className = 'lb-cat-btn' + (c.key === lbCategory ? ' active' : '');
     btn.textContent = c.label;
-    btn.onclick = () => { lbCategory = c.key; buildLbCatbar(); renderLeaderboard(); };
-    bar.appendChild(btn);
+    btn.onclick = () => { lbCategory = c.key; buildLbBars(); renderLeaderboard(); };
+    catBar.appendChild(btn);
+  });
+
+  const metricBar = document.getElementById('lb-metricbar');
+  const metrics = [
+    {key:'unique', label:'Unique Visitors'},
+    {key:'duration', label:'Time on Site'},
+    {key:'pages', label:'Pages Visited'}
+  ];
+  metricBar.innerHTML = '';
+  metrics.forEach(m => {
+    const btn = document.createElement('button');
+    btn.className = 'lb-cat-btn' + (m.key === lbMetric ? ' active' : '');
+    btn.textContent = m.label;
+    btn.onclick = () => { lbMetric = m.key; buildLbBars(); renderLeaderboard(); };
+    metricBar.appendChild(btn);
   });
 }
 
 function renderLeaderboard(){
   const content = document.getElementById('lb-content');
-  if (!lbCounts){ content.innerHTML = '<div class="lb-empty">No data yet.</div>'; return; }
+  if (!lbStats){ content.innerHTML = '<div class="lb-empty">No data yet.</div>'; return; }
+
+  const valueOf = a => lbMetric === 'unique' ? lbStats[a.id].sessions
+    : lbMetric === 'duration' ? lbStats[a.id].duration
+    : lbStats[a.id].pages;
+  const labelOf = v => lbMetric === 'unique' ? v + ' visitor' + (v===1?'':'s')
+    : lbMetric === 'duration' ? formatLbDuration(v)
+    : v + ' page' + (v===1?'':'s');
 
   let ranked = ARTISTS
     .filter(a => lbCategory === 'all' || a.specialty === lbCategory)
-    .map(a => ({...a, clicks: lbCounts[a.id] || 0}))
-    .sort((a,b) => b.clicks - a.clicks);
+    .map(a => ({...a, value: valueOf(a)}))
+    .sort((a,b) => b.value - a.value);
 
-  if (ranked.length === 0 || ranked.every(a => a.clicks === 0)){
-    content.innerHTML = '<div class="lb-empty">No link clicks logged yet in this category. Get posting!</div>';
+  if (ranked.length === 0 || ranked.every(a => a.value === 0)){
+    content.innerHTML = '<div class="lb-empty">No visits logged yet in this category. Get posting!</div>';
     return;
   }
 
@@ -1806,7 +1874,7 @@ function renderLeaderboard(){
     html += '<div class="lb-rank">' + rank + '</div>';
     html += '<div class="lb-emoji">' + a.emoji + '</div>';
     html += '<div><div class="lb-name">' + a.name + '</div><div class="lb-role">' + a.role + '</div></div>';
-    html += '<div class="lb-clicks">' + a.clicks + ' click' + (a.clicks===1?'':'s') + '</div>';
+    html += '<div class="lb-clicks">' + labelOf(a.value) + '</div>';
     html += '</div>';
   });
   content.innerHTML = html;
