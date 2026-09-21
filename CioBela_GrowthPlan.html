@@ -2378,6 +2378,25 @@ function toggleAcc(id) {
   }
 }
 
+// Deep-linking from the game — jumps to the right phase, opens the right
+// accordion item, scrolls to it. Works for any #a-xxx anchor already on
+// the page; nothing to update here as more phases get written.
+window.addEventListener('DOMContentLoaded', function(){
+  if (!location.hash) return;
+  const id = location.hash.substring(1);
+  const el = document.getElementById(id);
+  if (!el) return;
+  const phaseDiv = el.closest('.phase-content');
+  if (phaseDiv) {
+    const phaseNum = phaseDiv.id.replace('phase-', '');
+    showPhase(Number(phaseNum));
+  }
+  setTimeout(() => {
+    if (!el.classList.contains('open')) toggleAcc(id);
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 150);
+});
+
 function toggleDone(e, id) {
   e.stopPropagation();
   const item = document.getElementById(id);
