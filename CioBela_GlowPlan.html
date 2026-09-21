@@ -1642,6 +1642,11 @@ function showDashboard() {
     }, err => console.error('claims listener', err));
 }
 
+// Items with a fully written section in the Growth Plan doc — gets a
+// "More Detail" link. Add an id here the moment its section gets written.
+const DETAIL_IDS = new Set(['net1','net2','net3','sal1','sal2','sal3','sal5','onl1','onl2']);
+const GROWTH_PLAN_URL = 'https://shawntyd.github.io/ciobela-artist-marketing-roadmap/CioBela_GrowthPlan.html';
+
 function buildActions() {
   Object.entries(ACTIONS).forEach(([catId, actions]) => {
     const container = document.getElementById(`actions-${catId}`);
@@ -1678,7 +1683,10 @@ function buildActions() {
         </div>
         <div class="action-bottom">
           <div class="pts-badge">${action.pts} <span>pts</span></div>
-          <button class="expand-btn" onclick="toggleExpand('${action.id}')">Action Steps ▾</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+            ${DETAIL_IDS.has(action.id) ? `<a class="expand-btn" href="${GROWTH_PLAN_URL}#a-${action.id}" target="_blank" style="text-decoration:none;">More Detail →</a>` : ''}
+            <button class="expand-btn" onclick="toggleExpand('${action.id}')">Action Steps ▾</button>
+          </div>
         </div>
       `;
       container.appendChild(card);
