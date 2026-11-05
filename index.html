@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#F5F0E8;--bark:#2C2016;--gold:#B8935A;--gold-light:#D4B896;--charcoal:#1A1410;--line:rgba(44,32,22,.12);color-scheme:light}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--bark);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:640px;margin:0 auto;padding:56px 16px 64px}
+  header{text-align:center;margin-bottom:40px}
+  .eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:400}
+  h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size:46px;line-height:1.05;margin:10px 0 12px;color:var(--charcoal)}
+  .sub{font-size:14px;line-height:1.6;color:rgba(44,32,22,.7);max-width:400px;margin:0 auto}
+  .cards{display:flex;flex-direction:column;gap:14px}
+  .card{display:flex;align-items:center;gap:18px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 20px;text-decoration:none;color:inherit;transition:.25s;box-shadow:0 6px 20px rgba(44,32,22,.05)}
+  .card:hover{border-color:var(--gold);transform:translateY(-2px)}
+  .num{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:34px;color:var(--gold);width:40px;flex-shrink:0;text-align:center}
+  .txt{flex:1;min-width:0}
+  .txt h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:25px;line-height:1.15;color:var(--charcoal)}
+  .txt p{font-size:13.5px;line-height:1.55;color:rgba(44,32,22,.65);margin-top:4px}
+  .arrow{width:10px;height:10px;border-top:1.5px solid var(--gold);border-right:1.5px solid var(--gold);transform:rotate(45deg);flex-shrink:0}
+  footer{text-align:center;margin-top:48px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Cio Bela · Internal</div>
+    <h1>Marketing Hub</h1>
+    <p class="sub">Everything you need to grow your clientele, in one place.</p>
+  </header>
+
+  <main class="cards" id="cards"></main>
+
+  <footer>Cio Bela Multi-Service Salon</footer>
+</div>
+<script>
+/* ===== Add a new marketing link by adding one line here ===== */
+const links = [
+  { title: "Growth Plan", desc: "Your marketing roadmap for building a steady book of clients.",
+    url: "https://shawntyd.github.io/ciobela-artist-marketing-roadmap/CioBela_GrowthPlan.html" },
+  { title: "Creator Collabs", desc: "Local content creators ready to film with you, sorted by specialty.",
+    url: "https://shawntyd.github.io/cio-bela-analytics/creator-collabs/" },
+];
+document.getElementById("cards").innerHTML = links.map((l,i)=>`
+  <a class="card" href="${l.url}">
+    <span class="num">${String(i+1).padStart(2,"0")}</span>
+    <span class="txt"><h2>${l.title}</h2><p>${l.desc}</p></span>
+    <span class="arrow"></span>
+  </a>`).join("");
+</script>
+</body>
+</html>
